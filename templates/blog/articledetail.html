@@ -1,0 +1,96 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% static "images" as baseUrl %}
+{% block content %}
+
+
+<div id="container" class="container my-5" style="max-width:90%;overflow:auto;padding-bottom:100px">
+<div id="main">
+<div class="row">
+    {% if article.image %}
+    <div class="col-md-4 ">
+        <h1 class="card-title mb-1"><center>{{ article.title }}</center></h1>
+
+        <a href="{{ article.image.url }}" target="_blank"><img class="card-img-top" src="{{ article.image.url }}" width="200px" height="350px" alt="..."/></a>
+
+    </div>
+  <div class="col-md-8 px-4 py-2 mt-5" >
+        {{ article.content }}
+    </div>
+<div class="card-body">
+    <div class="small text-muted">{{ article.created }}
+        <small> <a href="{% url 'blog:existingprofile' article.author.user.id  %}" target=_blank">
+            Author: {{ article.author.preffered_name }}</a></small>
+    </div>
+</div>
+</div>
+
+     {% else %}
+    <div class="row mb-5">
+        <div >
+        <h1 class="card-title mx-5" >{{ article.title }}</h1>
+        <div class="col-md-8 px-4 py-4" >
+        {{ article.content }}
+            <div class="card-body">
+    <div class="small text-muted">{{ article.created }}
+        <small> <a href="{% url 'blog:existingprofile' article.author.user.id  %}" target=_blank">
+            Author: {{ article.author.preffered_name }}</a></small>
+    </div>
+</div>
+    </div>
+{% endif %}
+<div>
+
+    <div class="col-md-3 my-3" style="display:flex;justify-content:space-around;align-items:center">
+    <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-sm btn-primary">Back</a><a href="{% url 'blog:home' %}" class="btn btn-sm  btn-primary" >Home</a>
+    {% if request.user.email == article.author.user.email %}
+
+    <span><a href="{% url 'blog:update' article.pk %}" class="btn btn-sm btn-primary">update</a></span><span><a
+        href="{% url 'blog:delete' article.pk %}" class="btn btn-danger btn-sm">delete</a></span>
+
+    {% endif %}
+</div>
+        {% if comments %}
+        <div class="mx-2">
+        <P><b>Comments</b></P>
+        </div>
+        <ul class="list-unstyled">
+        <div>
+            {% for comment in comments %}
+            <div class="row my-2" ><li class="my-0"><a class="my-0" href="{% url 'blog:existingprofile' article.author.user.id %}" style="text-decoration:none">
+            {{ comment.author.preffered_name|title }}</a>: {{ comment.content }}</li>
+
+
+            {% if comment.author.user == request.user or article.author.user == request.user %}
+                <span class="my-0"><a href="{% url 'blog:comment_delete' comment.id %}" class="mt-0 btn btn-sm btn-danger" >delete</a>{% endif %}{% if comment.author.user == request.user %}{% csrf_token %}<a href="{% url 'blog:comment_update' comment.id %}" class="mx-2 my-0 btn btn-sm btn-primary" >edit</a>{% endif %}</span>
+            </div>
+            {% endfor %}
+
+        </div>
+        </ul>
+        {% endif %}
+        {% if user.is_authenticated %}
+    {% comment %}
+        <form action="." method="POST">
+            {% csrf_token %}
+            <div class="input-group ">
+               <p class="my-2 p-2" >{{ form.content }}</p>
+                    <div class="input-group-append">
+                   <button class="btn btn-sm btn-primary" id="button-submit" type="submit" >Post</button>
+                    </div>
+            </div>
+
+        </form>
+    {% endcomment %}
+        {% endif %}
+    </div>
+
+
+            </div>
+
+  </div>
+</div>
+</div>
+
+
+{% endblock %}

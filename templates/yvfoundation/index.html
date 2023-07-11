@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+{% load static %}
+{% static "images" as baseUrl %}
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>YV Foundation</title>
+
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}"/>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+<body>
+<!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'yvfoundation:home' %}"><div class="m-0 p-0" id="main-logo"><h4 style="font-family:Georgia"  class="m-0 p-0">YV</h4> <span class="p-0 m-0 foundation">FOUNDATION</span></div></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="{% url 'yvfoundation:home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'yvfoundation:about' %}">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'yvfoundation:contact' %}">Contact us</a></li>
+
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="overall">
+{% block content %}
+
+<div class="hero mb-3" id="hero" style="min-width:60vw;min-height:86vh">
+    <div class="row">
+        <div class="col-md-12">
+        <h4 class="slogan my-3 text-white" id="top-slogan"><span id="slogan-text">Changing the narrative one child at a time.</span>
+        </h4>
+        </div>
+
+    </div>
+
+
+    <div class="" id="logo" width="10px" height="10px">
+        <img class="img-fluid" src='https://am3pap003files.storage.live.com/y4m4Sp0mOjXAS--t9WXpc4p6k2D7qIpATJO4SBO4ybigpokwrG5Uy-IEkGTUKEkOf5wnBMsTaWp7UotiUlJrCrh6db2x2xlvH2DF-dVn8G-Y45aLOxhTlxiJxguxyT398D1LCmkCyOMMo1d-sZT2X7TInlXywVzR-G6eFPTpFEGxH9eq99jWfNbKdoH791FRdHa?width=2454&height=1577&cropmode=none' width="250px" height="150px" id="logoimage">
+    </div>
+
+</div>
+<div class="container" id="container">
+<main class="container huge" id="main">
+
+    <div class="about row">
+        <div class="row">
+            <h4><span class="first-letter mb-4">A</span>bout</h4>
+        </div>
+        <div class="row">
+        <div class="about-info  col-md-8 col-sm-12">
+            <p class="text-center ">
+                <b>YV Foundation</b> is a non-profit company which was established in 2020 by a group of 4 young women aged
+                “between” 23 to 34, who want to help with youth development and creating job opportunities amongst the
+                disadvantaged youth in South Africa. The organisation addresses social issues such as unemployment,
+                gender based violence and women empowerment in emphasising empowerment and sustainability within the
+                community. We are the most reliable and hardworking organisation. Our mission is to help close the
+                poverty gap within the community, create awareness and lend a helping hand.
+                We are conscious with facilitating with youth development and women empowerment in our disadvantaged
+                communities and are committed to growing and adapting our organisation to meet the emerging needs. YV
+                Foundation will provide comprehensive access to job opportunities and social services to the youth in
+                our community.
+
+            </p>
+        </div>
+        </div>
+
+
+
+        <div class="row mb-4">
+            <h4><span class="first-letter">C</span>ontact us</h4>
+        </div>
+        <div class="row contact-details">
+            <div class="contact-info col-md-6 col-sm-12 mt-2">
+                <p>Cape Town,Western Cape,South Africa<br>
+                    0791525798<br>
+                    kaysthisnthat@gmail.com
+                </p>
+            </div>
+
+        </div>
+</div>
+</main>
+<div class="modalo p-0" >
+    <div id="contents">
+        <div class="closebar">
+        <button class="close-btn btn">X</button>
+        </div>
+    <h4 id="feedback">Thanks for your feedback.</h4>
+    </div>
+
+
+</div>
+
+
+</div>
+
+{% endblock %}
+</div>
+<!-- Footer-->
+<footer class="py-5 bg-dark " id="footer">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Created by Abigail Molusi 2021</p>
+    </div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="{% static 'js/scripts.js' %}"></script>
+<script src="{% static 'main.js' %}"></script>
+
+</body>
+</html>

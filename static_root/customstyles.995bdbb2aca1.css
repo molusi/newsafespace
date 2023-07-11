@@ -1,0 +1,97 @@
+
+body{
+margin:0;
+padding:0;
+box-sizing:border-box;
+
+}
+.container{
+width:75%;
+margin:0 auto;
+height:100vh;
+max-height:90%;
+}
+
+ ul.errorlist {
+ margin: 0;
+ padding: 0;
+ }
+ fieldset {
+ border:solid grey;
+ padding:0.5em;
+ }
+ fieldset .thefooter{
+  position:absolute;
+   bottom:0;
+   left:0;
+   right:0
+ }
+ .is-danger{
+ border: 1px solid ;
+ padding:9px;
+ border-radius:4px;
+ border-color:#c92432;
+ color:#c92432;
+ background:#fffafa;
+ font-size:0.85em;
+ }
+
+
+ .input{
+ diplay:block;
+ width:100%;
+ padding:9px;
+ border:1px solid #ddddd;
+ border-radius:4px;
+ }
+
+
+ .errorlist li {
+ background-color: red;
+ color: white;
+ display: block;
+ font-size: 10px;
+ margin: 0 0 3px;
+ padding: 4px 5px;
+ }
+
+ nav li {
+ color:white;
+ text-decoration:none;
+ }
+ li {
+ margin: 1em;
+ }
+ li a:visited{
+color:purple;
+}
+
+.search{
+position:relative;
+top:50%;
+left:20%;
+}
+.nobooks{
+position:absolute;
+top:30%;
+left:40%;
+}
+.nobookslink{
+position:absolute;
+top:30.5%;
+left:34%;
+}
+
+ .modal-container{
+         background:wheat;
+
+        }
+
+
+
+.todos{
+font-family:cursive;
+text-decoration:none;
+margin-bottom:4em;
+}
+

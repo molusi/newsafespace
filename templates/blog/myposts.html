@@ -1,0 +1,84 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% static "images" as baseUrl %}
+{% block content %}
+
+
+
+
+<div class="container" style="background-color:grey;height:auto;overflow:auto;min-height:100%;display:flex;flex-direction:column;flex-wrap:wrap;padding:10%">
+
+
+
+    {% if articles %}
+
+
+{% for article in articles %}
+
+<div class="container" style="background-color:grey;padding-top:5rem;height:auto;overflow:auto;width:100%">
+
+    <div class="card mb-2 col-md-12" style="overflow:auto" >
+            
+        
+<div class="row">
+    {% if article.image %}
+    <div class="col-md-5 ">
+        <div class="row">
+        
+        <h2 class="card-title h4 mb-1" style="text-align:center;cursor:pointer"><a href="{{ article.get_absolute_url }}">{{ article.title.title }}</a></h2>
+            
+        </div>
+
+        <a href="{{ article.image.url }}" target="_blank"><img class="card-img-top" src="{{ article.image.url }}" width="200px" height="350px" alt="..."/></a>
+
+    </div>
+  <div class="col-md-7 px-4 py-2 mt-5" >
+        {{ article.content }}
+    </div>
+            
+       
+        
+
+
+            {% else %}
+
+            <div class="col-md-10 px-1 py-4">
+                <h2 class="card-title mx-5"><center><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></center></h2>
+                 <p>{{ article.content }}</p>
+            {% endif %}
+
+              
+                <small class="mb-1 mt-1 mx-4">{{ article.created }}</small>
+
+
+            </div>
+         </div>
+
+
+    </div>
+
+</div>
+{% endfor %}
+{% else %}
+
+
+<div class="mt-2 alert alert-primary alert-dismissible fade show" role="alert">
+<h3>Your audience is waiting for your content,add your first article.. </h3>
+</div>
+
+
+ {% endif %}
+
+
+
+<div class="row mx-5 my-5">
+    <a href="{% url 'blog:article-create' %}" class="pb-3 btn btn-primary" >Add article</a>
+</div>
+
+</div>
+{% endblock %}
+
+
+
+
+

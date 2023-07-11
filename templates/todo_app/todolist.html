@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}todo list{% endblock %}
+{% load static %}
+
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="container mb-4 mt-0">
+    <div class="row">
+        <center><h2 class="todos">My Todos</h2>  </center>
+    </div>
+    <div class="col-12 mt-0 mb-3">
+         {% if todos %}
+
+
+        <ul class="list-unstyled">
+
+            {% for todo in todos %}
+
+
+            <li><a href="{{ todo.get_absolute_url }}"><b>{{ todo.title }}</b>
+<!--                <form action="{% url 'todo_app:delete_todo_list' todo.id %}" method="post" style="float:right">-->
+<!--                    {% csrf_token %}-->
+<!--                    <button class="btn btn-danger btn-sm p-0.2"-->
+<!--                            type="submit">Delete-->
+<!--                    </button>-->
+<!--                </form>-->
+            </a>
+
+            </li>
+
+            {% endfor %}
+        </ul>
+    </div>
+
+
+
+{% else %}
+<div class="alert alert-info" role="alert">
+    <p>Looks like you don't have anything in your todo list..add a few items..</p>
+</div>
+
+{% endif %}
+
+</div>
+{% endblock %}
+{% include 'todo_app/footer.html' %}

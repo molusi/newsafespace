@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% load static %}
+
+
+{% block content %}
+{% include 'navbar.html' %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <button onclick="cloze()" type="button" class="btn close cloze" data-dismiss="alert" aria-label="close"><span aria-hidden="true"><b>x</b></span></button>
+{{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+<div class="container" style="height:auto;margin:20px auto;width:85%;">
+
+    <div class="container" style="display:flex;flex-direction:column;justify-content:auto;align-items:center">
+
+        <fieldset class="my-3 col-md-8 sm-4 " style="margin:0 auto;border-radius:8px" >
+
+            <form method="POST" action="{% url 'todo_app:add_todo' %}" class="m-2">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary" type="submit">add todo</button>
+            </form>
+        </fieldset>
+        
+
+    
+
+    {% if todos %}
+
+
+
+   
+<div class="col-md-8 sm-4" >
+    
+
+
+        <ul class="list-unstyled">
+
+            {% for todo in todos %}
+
+
+            <div class="row mx-3" style="display:flex;justify-content:center"><li><a href="{{ todo.get_absolute_url }}"><b>{{ todo.title }}</b>
+
+
+                <form action="{% url 'todo_app:delete_todo' todo.id %}"  method="post" style="float:right">
+                {% csrf_token %}
+                    <button class="btn btn-danger btn-sm p-0.2 done"
+                            type="submit" onclick="deleteTodo()">Done
+                    </button>
+                </form>
+
+
+            </a>
+                <small style="display:block;max-width:40%;font-size:0.6rem">Created: {{todo.created}}</small>
+
+            </li>
+                </div>
+
+
+
+            {% endfor %}
+        </ul>
+
+
+
+</div>
+
+
+
+       {% else %}
+<div class="alert alert-info" role="alert">
+    <p>Looks like you don't have anything in your todo list..add a few items..</p>
+</div>
+{% endif %}
+
+</div>
+</div>
+
+{% endblock %}

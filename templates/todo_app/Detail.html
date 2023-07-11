@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% load static %}
+
+
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="container">
+    <div class="row">
+        <h1>{{ todo.title }}</h1>
+    </div>
+    {% if error_message %}<p><strong>{{ error_message }}></strong></p>{% endif %}
+    <div class="row">
+        <div class="my-3 col">
+            <p>Details: {{ todo.text }}</p>
+            {% if todo.complete %}
+            <p> Task completed</p>
+            {% else %}
+            <p>Task incomplete</p>
+            {% endif %}
+            <p>Date created: {{ todo.created }}</p>
+        </div>
+        <a href="{% url 'todo_app:index' %}">Go back</a>
+    </div>
+</div>
+{% endblock %}

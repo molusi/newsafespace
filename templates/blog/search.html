@@ -1,0 +1,49 @@
+{% extends 'blog/index.html' %}
+{% block title %}Search{% if query %} Results{% endif %}{% endblock %}
+
+{% block content %}
+
+<div class="container" style="height:110vh;overflow:auto;">
+    <div class="row">
+
+
+ {% if query %}
+ <div class="row m-4">
+
+ {% if results %}
+     <div class="col-md-12 mt-4">
+ <h2>Results for "{{ query|escape }}":</h2>
+ <ul>
+ {% for article in results %}
+   <li><a href="{% url 'blog:detail' pk=article.id %}">{{ article|escape }}</a></li>
+
+ </ul>
+  </div>
+</div>
+ {% endfor %}
+
+ {% else %}
+     <div class="mt-5">
+ <center><span><h4 >No articles found .....</h4><a  href="{% url 'blog:home' %}">Go back</a></span></center>
+     </div>
+</div>
+{% endif %}
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+     </div>
+ </div>
+</div>
+
+
+
+
+{% endblock %}

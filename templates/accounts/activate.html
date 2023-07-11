@@ -1,0 +1,11 @@
+{% extends 'blog/index.html' %}
+{% autoescape off%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% static "images" as baseUrl %}
+{% block content %}
+Hi {{user.username}}
+
+Please use the link below to verify your account.
+
+{% endblock %}
