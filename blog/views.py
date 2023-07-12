@@ -40,6 +40,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
+import re
 
 user = get_user_model()
 
@@ -126,15 +127,21 @@ def activate(request, uidb64, token):
 
 def activateEmail(request, user, to_email):
     mail_subject = "Activate your user account."
+
+
+    name = re.split('[.@,]', user.email)[0]
+
     message = render_to_string("blog/template_activate_account.html", {
         'user': user,
         'domain': get_current_site(request).domain,
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
-        'protocol': 'https' if request.is_secure() else 'http'
+        'protocol': 'https' if request.is_secure() else 'http',
+        'name': name
     })
     email = EmailMessage(mail_subject, message, to=[to_email])
-    name = user.email.split("@")[0]
+    email.content_subtype = 'html'
+
     if email.send():
         messages.success(request, f'Dear {name}, please go to your email inbox and click on \
         received activation link to confirm and complete the registration. Note: Check your spam folder.')
@@ -158,11 +165,9 @@ def createaccount(request):
                 realuser = form.save(commit=False)
                 realuser.save()
                 activateEmail(request, realuser, form.cleaned_data.get("email"))
-                # activate(request, urlsafe_base64_encode(force_bytes(realuser.pk)),
-                #          account_activation_token.make_token(realuser))
                 return redirect(reverse_lazy("accounts:person_login"))
             else:
-                form_errors = form.errors.as_data()
+                form.errors
         return render(request, 'accounts/register.html', {"form": form})
 
 

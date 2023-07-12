@@ -1,11 +1,22 @@
-
-
-{% autoescape off %}
-
-Hi,
-
-Please click on the link below to confirm your registration:
-
-http://{{ domain }}{% url 'blog:activate' uidb64=uid token=token %}
-
-{% endautoescape %}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+  <h4 style="color:black">Safe Space</h4>
+    <p>Hi {{ name }},</p>
+    <p>Please click on the button below to confirm your registration:</p>
+    <a href="http://{{ domain }}{% url 'blog:activate' uidb64=uid token=token %}" class="button">Confirm Registration</a>
+</body>
+</html>

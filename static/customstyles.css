@@ -5,6 +5,19 @@ padding:0;
 box-sizing:border-box;
 
 }
+ .success-message {
+        color: purple;
+         border:solid purple;
+         text-align:center;
+         padding:0.5rem
+    }
+
+.error-message {
+        color: red;
+         border:solid red;
+         text-align:center;
+         padding:0.5rem
+    }
 .container{
 width:75%;
 margin:0 auto;

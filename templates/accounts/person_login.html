@@ -28,10 +28,20 @@
 
             <div class="field">
                 <div class="input-container control">
-                    {% if messages %}
+
                    
-                   <p class="help is-danger">{% for message in messages %}{{ message }} {% endfor %} </p> 
+                   {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <div class="success-message">{{ message }}</div>
+        {% elif message.tags == 'error' %}
+            <div class="error-message">{{ message }}</div>
+        {% endif %} {% endfor %}
+
+
                     {% endif %}
+
+
                 </div>
                 <div class="input-container control">
 

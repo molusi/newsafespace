@@ -19,8 +19,7 @@
     </div>
 <div class="card-body">
     <div class="small text-muted">{{ article.created }}
-        <small> <a href="{% url 'blog:existingprofile' article.author.user.id  %}" target=_blank">
-            Author: {{ article.author.preffered_name }}</a></small>
+        <small> <a href="{% url 'blog:existingprofile' article.author.user.id  %}" target="_blank"> Author: {{ article.author.preffered_name }}</a></small>
     </div>
 </div>
 </div>
