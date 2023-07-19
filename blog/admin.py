@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from django.contrib import admin
 from . models import *
+
 User=get_user_model()
 
 
@@ -11,7 +12,7 @@ class ArticleAdmin(admin.ModelAdmin):
 
 
 class UserprofileAdmin(admin.ModelAdmin):
-    list_display = ('preffered_name','user','profilepic')
+    list_display = ('user','profilepic')
 
 
 

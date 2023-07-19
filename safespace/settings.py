@@ -34,6 +34,9 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # Application definition
 import cloudinary
+import tinify
+tinify.key = "TxkRT8fyVQJ0cLcn1X4KB3r7d6M8bM9T"
+
 
 
 cloudinary.config(
@@ -50,7 +53,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
-    'yvfoundation.apps.YvfoundationConfig',
     'accounts.apps.AccountsConfig',
     'crispy_forms',
 ]

@@ -10,72 +10,44 @@
     {% csrf_token %}
 
 
-
-<!--    <p>{{ form.preffered_name }}</p>-->
-
-<!--    <label hidden="true" name="{{ userprofile.user}}" ></label>-->
-<!--    <input hidden="true" value="{{ request.user }}">-->
-<!--    <label>Profile picture-->
-<!--        <div style="display:flex;align-items:center">-->
-<!--            <img src="{% static 'images/dummypic.JPG' %}" width="100px" height="100px">-->
-<!--     <input type="file" name="profilepic" accept="image/*"></div></label>-->
-<!--    <p class="mt-2">{{ form.job_title }}</p>-->
-
-<!--    <p class="mt-2">{{ form.about }}</p>-->
-
-<!--     <input class="px-2 my-2" name="twitter" placeholder="twitter url" ><br>-->
-<!--    <input class="px-2 my-2" name="linkedin" placeholder="linkedin url" ><br>-->
-
-<!--    <input class="px-2 my-2" name="instagram" placeholder="instagram url"><br>-->
-
-<!--<button class="btn btn-primary" type="submit">Save</button>-->
-<!--</form>-->
-
-
-<!--</div>-->
-
     {% for error in errors %}
-     {{errors}}
+    <div class="help form-control  is-danger control py-2" >
+     {{error}}
+    </div>
     {% endfor %}
 
-    <div class="form-group">
-      {{ form.preffered_name }}
+    <div class="p-3 form-group">
+      {{ form.preferred_name }}
     </div>
 
     <div class="form-group">
       <div style="display:flex;align-items:center">
-          <img id="profile-preview" src="#" alt="Profile Picture Preview" width="100px" height="100px" class="rounded-circle mr-3">
+          <img id="profile-preview" src="#" alt="Profile Picture Preview" width="100px" height="100px" class="p-3 rounded-circle mr-3">
 
-<!--        <img src="{% static 'images/dummypic.JPG' %}" width="100px" height="100px" class="rounded-circle mr-3">-->
-<!--        <input type="file" name="profilepic" id="profilepic" accept="image/*">-->
           <input type="file" name="profilepic" accept="image/*" onchange="previewProfilePic(this)">
 
       </div>
     </div>
 
-    <div class="form-group">
-      {{ form.job_title}}
-    </div>
 
-    <div class="form-group">
+
+    <div class="p-3 form-group">
       {{ form.about}}
     </div>
 
-    <div class="form-group">
+    <div class="p-3 form-group">
 
       <input type="text" class="form-control" name="twitter" id="twitter" placeholder="Enter Twitter URL">
     </div>
 
-    <div class="form-group">
+    <div class="p-3 form-group">
 
       <input type="text" class="form-control" name="linkedin" id="linkedin" placeholder="Enter LinkedIn URL">
     </div>
 
-    <div class="form-group">
-      <input type="text" class="form-control" name="instagram" id="instagram" placeholder="Enter Instagram URL">
-    </div>
+
 
     <button class="btn btn-primary btn-block form-control" type="submit">Save</button>
   </form>
-</div>
+
 {% endblock %}

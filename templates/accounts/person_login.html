@@ -35,7 +35,7 @@
         {% if message.tags == 'success' %}
             <div class="success-message">{{ message }}</div>
         {% elif message.tags == 'error' %}
-            <div class="error-message">{{ message }}</div>
+            <div class="help mb-1 input-container form-control  is-danger control py-2">{{ message }}</div>
         {% endif %} {% endfor %}
 
 
@@ -45,12 +45,12 @@
                 </div>
                 <div class="input-container control">
 
-                    {{form.email }}{% for error in form.email.errors %}<p class="help is-danger">{{error}}</p> {% endfor %}
+                    {{form.email }}{% for error in form.email.errors %}<p class="help is-danger form-control py-2">{{error}}</p> {% endfor %}
                 </div>
             </div>
                 <div class="field">
                     <div class="input-container control">{{ form.password }}
-                    {% for error in form.password.errors %}<p class="help is-danger">{{error}}</p> {% endfor %}
+                    {% for error in form.password.errors %}<p class="help is-danger form-control py-2">{{error}}</p> {% endfor %}
                     </div>
                 </div>
             <center>
@@ -62,7 +62,7 @@
     </div>
 
 </div>
-
+{% include 'blog/footer.html' %}
 {% endblock %}
 
 

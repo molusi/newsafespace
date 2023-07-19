@@ -4,34 +4,68 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
+<style>
+  .form-label {
+    font-weight: bold;
+  }
 
-<div class="container mt-5 mb-5" style="height:100vh max-height:90%;overflow:auto;padding-bottom:100px">
-    <div class="col-md-8 mt-1">
+  .form-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+
+  .form-input:focus {
+    outline: 0;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  .form-submit-button {
+    font-size: 0.9em;
+    padding: 0.5rem 1rem;
+  }
+</style>
+
+<div class="container mt-5 mb-5" style="height:100vh; max-height:100%; padding-bottom:100px">
+  <div class="col-md-8 mt-1">
+    <form action="." method="POST" class="py-2 mb-3" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-group p-3">
+        {{ form.preferred_name|as_crispy_field }}
+      </div>
+
+      <div class="form-group p-3">
+        <input type="file" name="profilepic" accept="image/jpeg" class="form-input">
+      </div>
 
 
-        <form action="." method="POST" class="py-2 mb-3" enctype="multipart/form-data">
-            {% csrf_token %}
+      <div class="form-group p-3">
+        {{ form.about|as_crispy_field }}
+      </div>
+
+      <div class="form-group p-3">
+        {{ form.twitter|as_crispy_field }}
+      </div>
+
+      <div class="form-group p-3">
+        {{ form.linkedin|as_crispy_field }}
+      </div>
 
 
-            <p class="mb-3 px-2 ">{{ form.preffered_name }}</p>
+
+      <div class="form-group p-3">
+        <div class="d-flex justify-content-between">
+          <button class="form-control btn btn-primary form-submit-button px-4" type="submit" style="font-size: 0.9em;">Update</button>
 
 
-
-            <label class="pb-2 mt-0 my-2 px-2" for="profilepic" >Attach image</label>
-   <input  type="file" name="profilepic" accept="image/jpeg">
-             <p class="mt-2">{{ form.job_title }}</p>
-            <p class ="my-2 px-2" >{{ form.about }}</p>
-            <p class ="my-2 px-2" >{{ form.content}}</p>
-            <p  class ="my-2 px-2" >Twitter: {{form.twitter}}</p>
-            <p  class ="my-2 px-2" >Linkedin: {{form.linkedin}}</p>
-            <p class ="my-2 px-2 " >Instagram: {{form.instagram}}</p>
-
-
-            <button class="btn btn-primary p-0 mt-0" type="submit" style="font-size:0.7em ">Update
-            </button>
-        </form>
-
-    </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
- <a href="{% url 'blog:home' %}" class="mt-1 btn btn-primary" style="font-size:0.9em">Home</a>
+
 {% endblock %}

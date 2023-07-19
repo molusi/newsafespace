@@ -1,48 +1,30 @@
-from django.db.models import Q
-from django.shortcuts import render
-from django.shortcuts import render, redirect
-from django.utils import timezone
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from blog.models import *
-from blog.forms import *
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
-from django.views import generic
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib import messages, auth
-from itertools import chain
-from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.views.generic import TemplateView, View, ListView
-from django.core.exceptions import ValidationError, ObjectDoesNotExist, MultipleObjectsReturned
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect, request
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.views.generic import ListView, DetailView, CreateView, View
-from django.urls import reverse, reverse_lazy
-from django.http import HttpResponseRedirect
-from django.contrib import messages, auth
+import re
 from django.contrib.auth import authenticate
+from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils import timezone
-import random
-import string
-import datetime
-from accounts.models import User
-from .models import Article
-from accounts.forms import UserForm, CreateuserForm
 from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
-from .tokens import account_activation_token
 from django.core.mail import EmailMessage
-import re
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
+from django.shortcuts import redirect, get_object_or_404
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.views.generic import ListView, DetailView, View
+from django.views.generic.edit import DeleteView, UpdateView
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.core.exceptions import ObjectDoesNotExist
+from accounts.forms import UserForm, CreateuserForm
+from blog.forms import *
+from .models import Article,Vote
+from .tokens import account_activation_token
 
 user = get_user_model()
+
 
 @login_required
 def bloghome(request, *args, **kwargs):
@@ -64,6 +46,7 @@ def bloghome(request, *args, **kwargs):
         return redirect('blog:myposts')
 
 
+
 class MyPostsView(ListView):
     def get(self, *args, **kwargs):
         try:
@@ -72,10 +55,8 @@ class MyPostsView(ListView):
             return render(self.request, "blog/myposts.html", context)
         except ObjectDoesNotExist:
             messages.info(self.request, "No articles to show..Add your first article")
-            return redirect('blog:myposts')
+            return redirect('blog:article-create')
 
-
-from django.contrib import messages
 
 def person_login(request):
     if request.user.is_authenticated:
@@ -94,10 +75,6 @@ def person_login(request):
             else:
                 messages.error(request, 'Invalid credentials')
         return render(request, 'accounts/person_login.html', {"form": form})
-
-
-
-from django.contrib.auth.decorators import login_required
 
 
 def activate(request, uidb64, token):
@@ -123,11 +100,8 @@ def activate(request, uidb64, token):
         return redirect(reverse_lazy("accounts:person_login"))
 
 
-
-
 def activateEmail(request, user, to_email):
     mail_subject = "Activate your user account."
-
 
     name = re.split('[.@,]', user.email)[0]
 
@@ -150,15 +124,15 @@ def activateEmail(request, user, to_email):
         messages.error(request, f'Problem sending email to {to_email},check if you typed it correctly.')
 
 
-
-from django.urls import reverse_lazy
-
-
 def createaccount(request):
+    form = CreateuserForm()
+    user = request.user
     if request.user.is_authenticated:
         return redirect('blog:home')
+    elif user.is_superuser and not user.is_email_verified:
+        activateEmail(request, user.email)
+        return redirect(reverse_lazy("accounts:person_login"))
     else:
-        form = CreateuserForm()
         if request.method == 'POST':
             form = CreateuserForm(request.POST)
             if form.is_valid():
@@ -166,28 +140,43 @@ def createaccount(request):
                 realuser.save()
                 activateEmail(request, realuser, form.cleaned_data.get("email"))
                 return redirect(reverse_lazy("accounts:person_login"))
-            else:
-                form.errors
-        return render(request, 'accounts/register.html', {"form": form})
+    context = {"form": form}
+    return render(request, 'accounts/register.html', context)
 
 
-@login_required
-def comment_createview(request, *args, **kwargs):
+
+
+def comment_createview(request, pk):
     try:
         userprofile = Userprofile.objects.get(user__email=request.user)
     except ObjectDoesNotExist:
         messages.info(request, 'Please complete your profile first...')
         return redirect('blog:userprofile_create')
+    article = get_object_or_404(Article, id=pk)
+    comments = article.comments_all.all()
+    if request.method == 'POST':
+        form = CommentUpdateForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = Userprofile.objects.get(user__id=request.user.id)
+            comment.article = article
+            comment.save()
+            return HttpResponseRedirect(reverse("blog:detail", kwargs={"pk": pk}))
+    else:
+        form = CommentUpdateForm()
+
+    return render(request, 'blog/articledetail.html', {'article': article, 'comments': comments, 'form': form})
 
 
-@login_required
+
+
 def articlecreateview(request, *args, **kwargs):
     try:
         userprofile = Userprofile.objects.get(user__email=request.user)
     except ObjectDoesNotExist:
         messages.info(request, 'Please complete your profile first...')
         return redirect('blog:userprofile_create')
-    initial_data = {'author': userprofile.preffered_name}
+    initial_data = {'author': userprofile.preferred_name}
     form = ArticleForm(request.POST or None, initial=initial_data)
     context = {'form': form}
     if request.method == 'POST':
@@ -195,12 +184,10 @@ def articlecreateview(request, *args, **kwargs):
         if form.is_valid():
             title = form.cleaned_data.get('title')
             content = form.cleaned_data.get('content')
-            category = form.cleaned_data.get('category')
             if 'image' in request.FILES:
                 picture = request.FILES.get('image')
                 article = Article()
                 article.title = title
-                article.category = category
                 article.content = content
                 article.image = picture
                 article.author = get_object_or_404(Userprofile, user__email=request.user)
@@ -210,38 +197,38 @@ def articlecreateview(request, *args, **kwargs):
             else:
                 article = Article()
                 article.title = title
-                article.category = category
                 article.content = content
                 article.author = get_object_or_404(Userprofile, user__email=request.user)
                 article.save()
                 context["article"] = article
                 return redirect('blog:home')
-        else:
-            print(form.errors)
     return render(request, "blog/article_create.html", context)
 
-@login_required
-def commentupdate(request, pk, *args, **kwargs):
+
+
+
+
+def commentdelete(request, pk):
     comment_ = get_object_or_404(Comment, id=pk)
     article_ = comment_.article
-    initial_data = {"content": comment_.content}
-    form = CommentForm(request.POST or None, initial=initial_data)
-    context = {"comment": comment_, "article": article_, "form": form}
-    if request.method == 'POST':
-        form = CommentForm(request.POST, initial=initial_data)
-        if form.is_valid():
-            content = form.cleaned_data.get("content")
-            comment = Comment()
-            comment.content = content
-            comment.article = article_
-            comment.author = comment_.author
-            comment.save()
-            return HttpResponseRedirect(reverse("blog:detail", kwargs={"pk": article_.pk}))
+    comment_.delete()
+    return HttpResponseRedirect(reverse("blog:detail", kwargs={"pk": article_.pk}))
+
+
+voters = []
+def upvote(request, article_id):
+    article = Article.objects.get(id=article_id)
+    vote, created = Vote.objects.get_or_create(user=request.user, article=article)
+
+    if request.user not in voters:
+        if created:
+            vote.upvote = 1
         else:
-            form.errors()
-    else:
-        form = CommentForm()
-    return render(request, "blog/articledetail.html", context)
+            vote.upvote += 1
+            vote.save()
+        voters.append(request.user)
+    return redirect('blog:detail', pk=article_id)
+
 
 
 class ArticleUpdateView(LoginRequiredMixin, UpdateView):
@@ -257,6 +244,20 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
 class ArticleDetailView(DetailView):
     model = Article
     template_name = 'blog/articledetail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        article = self.get_object()
+        comments = Comment.objects.filter(article=article)
+        try:
+            votes=Vote.objects.get(article__id=article.id)
+            upvotes=votes.upvote
+            context['comments'] = comments
+            context["upvotes"]=upvotes
+        except ObjectDoesNotExist:
+            pass
+        return context
+
 
 
 class ArticleDeleteView(LoginRequiredMixin, DeleteView):
@@ -279,8 +280,7 @@ class SearchView(View):
         if query:
             qset = (
                     Q(title__icontains=query) |
-                    Q(author__preffered_name__icontains=query) |
-                    Q(category__icontains=query) |
+                    Q(author__preferred_name__icontains=query) |
                     Q(content__icontains=query)
             )
             results = Article.objects.filter(qset).distinct()
@@ -290,30 +290,35 @@ class SearchView(View):
             return redirect('blog:home')
 
 
-@login_required
+
 def userprofileview(request, *args, **kwargs):
-    user = get_user_model()
-    initial_data = {"user": request.user}
     form = UserProfileForm()
-    context = {'form': form}
+
+
     if request.method == 'POST':
-        form = UserProfileForm(request.POST)
+        form = UserProfileForm(request.POST, request.FILES)
         if form.is_valid():
-            user = request.user
-            preffered_name = form.cleaned_data.get('preffered_name')
+            preferred_name = form.cleaned_data.get('preferred_name')
             about = form.cleaned_data.get('about')
-            if 'profilepic' in request.FILES:
-                profilepicture = request.FILES.get('profilepic')
-                userprofile = Userprofile(user=user, preffered_name=preffered_name, about=about,
-                                          profilepic=profilepicture)
-            else:
-                userprofile = Userprofile(user=user, preffered_name=preffered_name, about=about)
+            profilepic = form.cleaned_data.get('profilepic')
+            linkedin = form.cleaned_data.get('linkedin')
+            twitter = form.cleaned_data.get('twitter')
+            userprofile, created = Userprofile.objects.get_or_create(user=request.user)
+
+            userprofile.preferred_name = preferred_name
+            userprofile.about = about
+            userprofile.linkedin=linkedin
+            userprofile.twitter=twitter
+
+            if profilepic:
+                userprofile.profilepic = profilepic
+
             userprofile.save()
-            context["userprofile"] = userprofile
+
             return HttpResponseRedirect(reverse('blog:existingprofile', kwargs={'pk': userprofile.user.id}))
-        else:
-            form.errors
+    context = {'form': form}
     return render(request, "blog/profile.html", context)
+
 
 
 class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -325,16 +330,16 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
         id_ = self.kwargs.get("pk")
         return get_object_or_404(Userprofile, pk=id_)
 
-@login_required
+
+
 def existinguserprofile(request, pk):
     try:
         userprofile = Userprofile.objects.get(user__id=pk)
-        result = list(chain(Article.objects.filter(author__id=userprofile.id)))
-        context = {"userprofile": userprofile, "result": result}
+        context = {"userprofile": userprofile}
         return render(request, 'blog/existing_profile.html', context)
     except ObjectDoesNotExist:
         if pk == request.user.id:
             return redirect("blog:userprofile_create")
         else:
-            messages.info(request, 'Profile nolonger exists..')
-            return HttpResponseRedirect(reverse('blog:home', kwargs={"pk": pk}))
+            messages.info(request, 'Profile no longer exists..')
+            return HttpResponseRedirect(reverse('blog:home'))
