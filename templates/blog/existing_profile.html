@@ -3,8 +3,10 @@
 {% static "images" as baseUrl %}
 {% block content %}
 
+
+
 <div class="container" style="height:100%;width:100%;display:flex;justify-content:center;align-items:center;">
-    {%if result%}
+
 
 
         <aside class="profile-card" style="margin:0 auto">
@@ -14,13 +16,12 @@
   <header>
 
     <!-- here’s the avatar -->
-<img src="{{ userprofile.profilepic.url }}" alt="Profile image">
+<img src="{{ userprofile.profilepic.url }}" alt="Profile image" width="350px" height="300px">
 
     <!-- the username -->
-    <h1>{{ userprofile.preffered_name|title }}</h1>
+    <h1>{{ userprofile.preferred_name|title }}</h1>
 
-    <!-- and role or location -->
-    <h2>{{ userprofile.job_title }}</h2>
+
 
   </header>
 
@@ -49,54 +50,40 @@
     </li>
     {% endif %}
     <!-- envato – use this one to link to your marketplace profile -->
-    {% if userprofile.instagram %}
-    <li>
-     <a href="{{userprofile.instagram}}" target='_blank'><i class="bi bi-instagram px-2 mt-0 mb-3" style="font-size:1.5rem;color:orangered"></i></a></span>
-    </li>
 
-    {% endif %}
   </ul>
+{% if userprofile.user.email == request.user.email %}
+    <div class="container" style="display:flex;justify-content:center">
 
-    <!-- codepen - your codepen profile-->
+    <div class="row">
+            <div class="col-sm">
+                <a href="{% url 'blog:userprofile_update' request.user.id %}">
+                   <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+            </div>
 
-            {% if userprofile.user.email == request.user.email %}
-            <div class="container" style="display:flex;justify-content:center">
-  <div class="row " >
-    <div class="col-sm">
-      <a href="{% url 'blog:userprofile_update' userprofile.id %}" style="text-align:center;font-size:0.6em;display:block;width:5rem;margin:auto;text-decoration:none"  class="btn-sm btn-primary">
-                            Edit profile</a>
+            <div class="col-sm"></div>
+        </div>
+             <div class="row">
+        <div class="col-6 pb-5" style="display:flex;justify-content:space-around">
+            <a href="{% url 'blog:home' %}"
+                >
+                <i class="fa-solid fa-house"></i>
+            </a>
+        </div>
     </div>
-    <div class="col-sm">
-       <a href="/.."  style="text-align:center;font-size:0.6em;display:block;width:5rem;margin:auto;text-decoration:none" class="btn-sm btn-primary">Home</a>
+        </div>
+{% else %}
+    <div class="row">
+        <div class="col-6 pb-5" style="display:flex;justify-content:space-around">
+
+               <a href="{{request.META.HTTP_REFERER|escape}}" style="font-size:1.5rem" ><i class="fa-solid fa-backward"></i></a>
+
+        </div>
     </div>
-    <div class="col-sm">
-
-    </div>
-
-  </div>
-</div>
-               {% else %}
-                        <div class="row">
-                        <div class="col-6 pb-5" style="display:flex;justify-content:space-around">
-                        <a href="{{request.META.HTTP_REFERER|escape}}" style="text-align:center;font-size:0.6em;display:block;width:5rem;margin:auto" class="btn btn-sm btn-primary">Back</a>
-                         </div>
-                        </div>
-                        {% endif %}
-
-
-
-
-
-
-
+            {% endif %}
         </aside>
-    </div>
+ </div>
 
 
-{% endif %}
-
-    <!-- codepen - your codepen profile-->
 {% endblock %}
-
-
-

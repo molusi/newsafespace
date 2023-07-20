@@ -22,13 +22,21 @@
   }
 }
 </script>
-
+<script src="https://kit.fontawesome.com/a3f13f3fff.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@700&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&display=swap" rel="stylesheet">
 
+<style>
+  .card-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+</style>
 </head>
 <body style="background-color:grey;">
 <!-- Responsive navbar-->
@@ -41,6 +49,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 {% if request.user.is_authenticated %}
+                 <li class="nav-item"><a class="nav-link" href="{% url 'blog:home' %}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'blog:myposts' %}">My posts</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'blog:existingprofile' request.user.id %}">My
                     profile</a></li>
@@ -111,7 +120,7 @@
                 {% if article.image %}
                 
                 <a href="{{ article.image.url }}" target="_blank">
-                    <img class="card-img-top" src="{{ article.image.url }}"  width="100px" height="250px" alt="supportingimage">
+                    <img class="card-img-top" src="{{ article.image.url }}"  width="150px" height="300px" alt="supportingimage">
                  </a>  
                 
                 {% endif %}
@@ -171,7 +180,7 @@
 {% endblock %}
 <!-- Footer-->
 
-<footer class="py-5 bg-dark" style="width:100%;position:relative;clear:both;margin-top:7rem;bottom:0%;left:0;right:0">
+<footer class="py-5 bg-dark" style="width:100%;position:relative;clear:both;margin-top:15rem;bottom:0%;left:0;right:0">
     <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Created by Abigail Molusi </p>
     </div>
 </footer>

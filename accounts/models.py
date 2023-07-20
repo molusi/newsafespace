@@ -1,4 +1,4 @@
-
+from django.core.mail import send_mail
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
@@ -7,6 +7,8 @@ from django.contrib.auth.models import (AbstractBaseUser,BaseUserManager)
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 import uuid
+
+import blog
 
 
 class UserManager(BaseUserManager):
@@ -30,7 +32,8 @@ class UserManager(BaseUserManager):
         user = self.create_user(
             email,
             password=password,
-            is_staff=True
+            is_staff=True,
+
         )
         return user
 
@@ -39,8 +42,11 @@ class UserManager(BaseUserManager):
             email,
             password=password,
             is_staff=True,
-            is_admin = True
+            is_admin = True,
+
         )
+
+
         return user
 
 
@@ -75,3 +81,5 @@ class User(AbstractBaseUser):
     @property
     def is_active(self):
         return self.active
+
+

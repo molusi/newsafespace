@@ -40,7 +40,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('blog/', include('blog.urls')),
-    path('yvfoundation/', include('yvfoundation.urls')),
     path('register',views.createaccount,name="create_account"),
     path('accounts/', include('accounts.urls')),
 ]

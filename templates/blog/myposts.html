@@ -3,82 +3,52 @@
 {% static "images" as baseUrl %}
 {% block content %}
 
+<style>
+  .card-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+</style>
 
+<div class="container" style="background-color: grey; height: auto; overflow: auto; min-width: 100%; min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: 10%">
 
+  {% if articles %}
 
-<div class="container" style="background-color:grey;height:auto;overflow:auto;min-height:100%;display:flex;flex-direction:column;flex-wrap:wrap;padding:10%">
+  {% for article in articles %}
 
-
-
-    {% if articles %}
-
-
-{% for article in articles %}
-
-<div class="container" style="background-color:grey;padding-top:5rem;height:auto;overflow:auto;width:100%">
-
-    <div class="card mb-2 col-md-12" style="overflow:auto" >
-            
-        
-<div class="row">
+  <div class="container mb-4" style=" height: auto;overflow-wrap: anywhere; overflow: hidden;background-color: white; border-radius: 5px; padding: 2rem; display: flex; justify-content: space-between; align-items: flex-start; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
     {% if article.image %}
-    <div class="col-md-5 ">
-        <div class="row">
-        
-        <h2 class="card-title h4 mb-1" style="text-align:center;cursor:pointer"><a href="{{ article.get_absolute_url }}">{{ article.title.title }}</a></h2>
-            
-        </div>
-
-        <a href="{{ article.image.url }}" target="_blank"><img class="card-img-top" src="{{ article.image.url }}" width="200px" height="350px" alt="..."/></a>
-
+    <div class="card-image-container">
+      <a href="{{ article.get_absolute_url }}" target="_blank">
+        <img class="card-img-top" src="{{ article.image.url }}" alt="..." style="width: 250px; height: 350px; margin-right: 1rem;">
+      </a>
     </div>
-  <div class="col-md-7 px-4 py-2 mt-5" >
-        {{ article.content }}
+    {% endif %}
+    <div class="card-content-container" style="flex: 1; padding-left: 1rem;">
+      <h2 class="card-title h4 mb-1">
+        <a href="{{ article.get_absolute_url }}">{{ article.title.title }}</a>
+      </h2>
+      <p class="card-content;" style="" >{{ article.content }}</p>
+      <small class="mb-1 mt-1">{{ article.created }}</small>
     </div>
-            
-       
-        
+  </div>
 
+  {% endfor %}
 
-            {% else %}
+  {% else %}
 
-            <div class="col-md-10 px-1 py-4">
-                <h2 class="card-title mx-5"><center><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></center></h2>
-                 <p>{{ article.content }}</p>
-            {% endif %}
+  <div class="mt-2 alert alert-primary alert-dismissible fade show" role="alert">
+    <h3>Your audience is waiting for your content. Add your first article...</h3>
+  </div>
 
-              
-                <small class="mb-1 mt-1 mx-4">{{ article.created }}</small>
+  {% endif %}
 
-
-            </div>
-         </div>
-
-
-    </div>
-
-</div>
-{% endfor %}
-{% else %}
-
-
-<div class="mt-2 alert alert-primary alert-dismissible fade show" role="alert">
-<h3>Your audience is waiting for your content,add your first article.. </h3>
-</div>
-
-
- {% endif %}
-
-
-
-<div class="row mx-5 my-5">
-    <a href="{% url 'blog:article-create' %}" class="pb-3 btn btn-primary" >Add article</a>
-</div>
+  <div class="row mt-4">
+    <a href="{% url 'blog:article-create' %}" class="btn btn-primary">Add article</a>
+  </div>
 
 </div>
 {% endblock %}
-
-
-
-
-

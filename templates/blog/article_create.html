@@ -13,29 +13,29 @@
 {% endfor %}
 
 {% endif %}
-<div class="container" height="100vh" style="overflow:auto;padding-bottom:100px">
-<div class="col-md-7 my-5 ">
-<form action="." method="post" enctype="multipart/form-data">
+<div class="container py-4" height="100vh" style="overflow:auto;padding-bottom:100px">
+<div class="my-4">
+<form action="." method="post" enctype="multipart/form-data" style="margin:auto;width:60%">
     {% csrf_token %}
-    <p class="mt-2">{{ form.title}}</p>
-    <label><b>Category</b></label>
-    {% for value,name in form.fields.category.choices %}
-        <div class="custom-control custom-checkbox">
-            <input id="{{ name }}" name="category" value="{{ value }}" class="custom-control-input" type="checkbox">
-            <label class="custom-control-label" for="{{ name }}">{{ name }}</label>
-        </div>
-    {% endfor %}
 
-    <label class="pb-2 mt-2" for="image" ><b>Attach image</b></label><br>
-   <input  type="file" name="image" accept="image/jpeg">
-   <br>
-    <p class="my-2 py-2" >{{ form.content }}</p>
+    <div class="form-group my-4">
 
+        {{ form.title }}
+    </div>
 
+    <div class="form-group my-4">
 
-    <button class="btn btn-lg btn-primary px-4 py-0 mt-1" type="submit">Save</button>
+        <input type="file" name="image" accept="image/jpeg">
+    </div>
 
+    <div class="form-group my-4">
+
+        {{ form.content }}
+    </div>
+
+    <button class=" form-control btn btn-lg btn-primary " type="submit">Save</button>
 </form>
+
 </div>
 
 
