@@ -19,36 +19,46 @@
 
   {% for article in articles %}
 
-  <div class="container mb-4" style=" height: auto;overflow-wrap: anywhere; overflow: hidden;background-color: white; border-radius: 5px; padding: 2rem; display: flex; justify-content: space-between; align-items: flex-start; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+  <div class="container mb-4" style=" height: auto;overflow-wrap: anywhere; overflow: hidden;background-color: white; border-radius: 5px; padding: 2rem;  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);">
+     <div class="row"> <h2 class="card-title h4 mb-1" style="font-family: 'Angkor', cursive;">
+        <a href="{{ article.get_absolute_url }}" style="font-family: 'Lilita One', cursive;" >{{ article.title.title }}</a>
+      </h2></div>
+      <div class="row">
     {% if article.image %}
+   <div class="col-md-6 col-xm-10">
     <div class="card-image-container">
       <a href="{{ article.get_absolute_url }}" target="_blank">
-        <img class="card-img-top" src="{{ article.image.url }}" alt="..." style="width: 250px; height: 350px; margin-right: 1rem;">
+        <img class="card-img-top img-fluid" src="{{ article.image.url }}" alt="..." >
       </a>
     </div>
+     </div>
     {% endif %}
+       <div  class="col-md-4 col-xm-10">
     <div class="card-content-container" style="flex: 1; padding-left: 1rem;">
-      <h2 class="card-title h4 mb-1">
-        <a href="{{ article.get_absolute_url }}">{{ article.title.title }}</a>
-      </h2>
-      <p class="card-content;" style="" >{{ article.content }}</p>
+
+      <p class="card-content" style="font-family: 'Fjalla One', sans-serif;" >{{ article.content }}</p>
       <small class="mb-1 mt-1">{{ article.created }}</small>
     </div>
+       </div>
   </div>
-
+</div>
   {% endfor %}
+      <div class="row mt-1">
+    <a href="{% url 'blog:article-create' %}" class="btn btn-primary" style="margin:auto">Add article</a>
+  </div>
 
   {% else %}
-
-  <div class="mt-2 alert alert-primary alert-dismissible fade show" role="alert">
+<div class="container" style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+  <div class=" row alert alert-primary alert-dismissible fade show text-center" role="alert" style="margin:auto">
     <h3>Your audience is waiting for your content. Add your first article...</h3>
   </div>
-
+    <div class="row mt-1">
+    <a href="{% url 'blog:article-create' %}" class="btn btn-primary" style="margin:auto">Add article</a>
+  </div>
+</div>
   {% endif %}
 
-  <div class="row mt-4">
-    <a href="{% url 'blog:article-create' %}" class="btn btn-primary">Add article</a>
-  </div>
+
 
 </div>
 {% endblock %}

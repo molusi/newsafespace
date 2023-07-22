@@ -17,13 +17,18 @@
 
 
 
-<div class="container mt-5 p-0" style="height:100vh;overflow:auto;padding-bottom:100px">
+<div class="container mt-2 p-0" style="height:100vh;overflow:auto;padding-bottom:100px;display:flex;flex-direction:column;justify-content:center;align-items:center">
  <center><form action='.' method='POST'>
     {% csrf_token %}
-     <div class="col-md-6 mx-3">
-    <h1>Do you want to delete the post "{{ object.title }}"?</h1>
-    <button type="submit" class="btn btn-sm btn-danger ">Yes</button>
+     <div class="col-md-6 col-sm-5" style="background-color:white;padding:3rem;box-shadow:
+  2px 2px 4px rgba(0, 0, 0, 0.4),
+  -2px -2px 4px rgba(255, 255, 255, 0.4);margin-top:3rem
+" >
+    <h1 style="font-family: 'Angkor', cursive;font-size:1.5rem">Do you want to delete the post "{{ object.title }}"?</h1>
+         <div style="display:flex;justify-content:center">
+    <button type="submit" class="btn btn-sm btn-danger " style="margin-right:2rem">Yes</button>
     <span><a href="{% url 'blog:detail' article.pk %}" class="btn btn-sm btn-primary">cancel</a></span>
+             </div>
      </div>
 </form></center>
 

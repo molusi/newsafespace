@@ -20,7 +20,7 @@ user = get_user_model()
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
-    image = CloudinaryField('blog_image',blank=True,null=True)
+    image = CloudinaryField('blog_image',default="https://res.cloudinary.com/abimolusi/image/upload/v1656202700/evefbujdtdnelnjkfeiz.jpg")
     content = models.TextField()
     author = models.ForeignKey("Userprofile",on_delete=models.SET_NULL,blank=True,null=True)
     created = models.DateField(auto_now_add=True)
@@ -37,16 +37,16 @@ class Article(models.Model):
                     if isinstance(self.image, InMemoryUploadedFile):
                         image_data = self.image.read()
 
-                    # Compress the image with Tinify
-                    tinify.key = "TxkRT8fyVQJ0cLcn1X4KB3r7d6M8bM9T"
-                    source = tinify.from_buffer(image_data)
-                    compressed_image = source.to_buffer()
+                        # Compress the image with Tinify
+                        tinify.key = "TxkRT8fyVQJ0cLcn1X4KB3r7d6M8bM9T"
+                        source = tinify.from_buffer(image_data)
+                        compressed_image = source.to_buffer()
 
-                    # Upload the compressed image to Cloudinary
-                    cloudinary_response = cloudinary.uploader.upload(compressed_image)
+                        # Upload the compressed image to Cloudinary
+                        cloudinary_response = cloudinary.uploader.upload(compressed_image)
 
-                    # Update the profilepic field with the new Cloudinary URL
-                    self.image = cloudinary_response["secure_url"]
+                        # Update the profilepic field with the new Cloudinary URL
+                        self.image = cloudinary_response["secure_url"]
             except Article.DoesNotExist:
                 pass
         super().save(*args, **kwargs)
@@ -60,7 +60,7 @@ class Article(models.Model):
 class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    upvote = models.IntegerField(default=0)
+    upvote = models.IntegerField(default=1)
 
 
 
@@ -84,9 +84,8 @@ class Comment(models.Model):
 class Userprofile(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     preferred_name = models.CharField(max_length=255, null=False)
-    profilepic = CloudinaryField("userprofiles", default="userprofiles/dp.JPG")
+    profilepic = CloudinaryField("userprofiles", default="https://res.cloudinary.com/abimolusi/image/upload/v1690024654/person_lgnirh.jpg")
     about = models.CharField(max_length=500, null=True)
-    twitter = models.URLField(blank=True, null=True,default='https://twitter.com/AbigailMolusi')
     linkedin = models.URLField(blank=True, null=True,default='https://www.linkedin.com/in/abigail-molusi-a8719b229/?originalSubdomain=za')
 
 

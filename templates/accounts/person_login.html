@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'blog/index.html' %}
 {% load crispy_forms_tags %}
 {% block title %}Login{% endblock%}
 
@@ -7,62 +7,59 @@
 
 
 {% block content %}
-{% include 'navbar.html' %}
-<div class="container" style="margin:auto;height:80vh">
+
+<div class="container" style="height:100vh;width:100vw" >
+    <div class=" container" style="margin:auto;padding-top:1.5rem;padding-bottom:100px;margin:auto;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center">
 
 
 
-
-    <div class="col-12 mt-5" style="display:flex;flex-direction:column;align-items:center;justify-content:center">
-         <div class="row my-3 ">
+    <div class="col-xs-12 col-sm-8 col-md-4" style="margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:center">
+         <div class="row my-3 text-center">
 
 
                 <p >Please log in.
-                    or </span><a href="{% url 'create_account' %}">Register here</a></p>
+                    or <a href="{% url 'create_account' %}" style="color:white">Register here</a></p>
 
 </div>
-
+<div class="col-md-8 col-xm-10" style="margin:auto">
         <form id="my-form" class="my-form" action="{% url 'accounts:person_login'%}" method="post">
             {% csrf_token %}
 
-
-            <div class="field">
-                <div class="input-container control">
-
-                   
-                   {% if messages %}
-        {% for message in messages %}
-        {% if message.tags == 'success' %}
-            <div class="success-message">{{ message }}</div>
-        {% elif message.tags == 'error' %}
-            <div class="help mb-1 input-container form-control  is-danger control py-2">{{ message }}</div>
-        {% endif %} {% endfor %}
+                    {% if messages %}
+            {% for message in messages %}
 
 
-                    {% endif %}
+
+            {% if message.tags == 'error' %}
 
 
-                </div>
-                <div class="input-container control">
+    <div class="field text-center">
+        <div class="input-container control text-center text-red help  is-invalid ">
+          <p class="">{{message }}</p>
 
-                    {{form.email }}{% for error in form.email.errors %}<p class="help is-danger form-control py-2">{{error}}</p> {% endfor %}
-                </div>
-            </div>
-                <div class="field">
-                    <div class="input-container control">{{ form.password }}
-                    {% for error in form.password.errors %}<p class="help is-danger form-control py-2">{{error}}</p> {% endfor %}
-                    </div>
-                </div>
+        </div>
+    </div>
+
+
+ {% endif %}
+{% endfor %}
+ {% endif %}
+
+                    <div class="text-center  input-container control">{{ form.email }}   </div>
+
+                    <div class=" text-center  input-container control">{{ form.password }}</div>
+
             <center>
-                <button class="mb-5 btn-primary btn px-5" name="login" type="submit">Login</button>
+                <button class="btn form-control btn-primary mb-2" name="login" type="submit">Login</button>
+
             </center>
         </form>
-
+</div>
 
     </div>
 
 </div>
-{% include 'blog/footer.html' %}
+</div>
 {% endblock %}
 
 

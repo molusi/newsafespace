@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'blog/index.html' %}
 {% block title %}Register{% endblock%}
 
 
@@ -6,38 +6,34 @@
 
 
 {% block content %}
-{% include 'navbar.html' %}
-<div class="container" >
 
-    <div class="px-1 mt-0  container" style="height:100%;display:flex;flex-direction:column;align-items:center;">
-<h3 class="mt-5 row text-center">Register</h3>
-        <div class="col-md-8 ">
+<div class="container " >
 
-<form action="" method="post" id="my-form" class="my-form p-0 m-0">
+    <div class="container" style="margin:auto;height:80vh;width:80vw;display:flex;flex-direction:column;align-items:center;justify-content:center">
+<h3 class="mt-5 row text-center" style="font-family: 'Angkor', cursive;">Register</h3>
+        <div class="container">
+            <div class="row" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center">
+             <div class="col-xs-12 col-sm-8 col-md-4" style="margin:auto">
+
+
+                <form action="" method="post" id="my-form" class="p-0 m-0 my-form">
    {% csrf_token %}
 
 
+    <div  class="field text-center" >{% for error in form.email.errors %}<p class="help mb-1 input-container form-control is-invalid  is-danger control text-red " >{{error}}</p> {% endfor %}</div><div  class=" text-center  input-container control">{{form.email  }}</div>
+    <div class="field text-center"><div class="input-container control text-center">{{ form.password1 }}{% for error in form.password1.errors %}<p class="text-center text-red help form-control is-invalid  is-danger control  ">{{error}}</p> {% endfor %}</div></div>
+    <div class="field text-center"><div class="input-container control text-center">{{ form.password2 }}{% for error in form.password2.errors %}<p class=" text-center text-red help form-control is-invalid  is-danger control ">{{error}}</p> {% endfor %}</div></div>
 
-
-            
-    <div  class="field " >{% for error in form.email.errors %}<p class="help mb-1 input-container form-control  is-danger control py-2">{{error}}</p> {% endfor %}</div><div  class="my-0 input-container control">{{form.email  }}</div>
-    <div class="field"><div class="input-container control">{{ form.password1 }}{% for error in form.password1.errors %}<p class="help form-control  is-danger control py-2 ">{{error}}</p> {% endfor %}</div></div>
-    <div class="field"><div class="input-container control">{{ form.password2 }}{% for error in form.password2.errors %}<p class="help form-control is-danger control py-2">{{error}}</p> {% endfor %}</div></div>
-
-
-
-
-
-
-   <center><button class="btn btn-primary mb-2" name="createuser" type="submit" >Create Account</button></center>
+   <center><button class="btn form-control btn-primary mb-2" name="createuser" type="submit" >Create Account</button></center>
    </form>
 
-
-
-        <center> Already have an account? <a href="{% url 'accounts:person_login' %}">Login</a></center>
+        <center> Already have an account? <a href="{% url 'accounts:person_login' %}" style="color:white">Login</a></center>
             </div>
+        </div>
+        </div>
+
 </div>
    </div>
-{% include 'blog/footer.html' %}
+
     {% endblock %}
 

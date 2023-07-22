@@ -3,31 +3,32 @@
 {% static "images" as baseUrl %}
 {% block content %}
 
-
-<div id="container" class="container my-5" style="max-width:90%;overflow:auto;padding-bottom:100px">
-
-
+<div class="container" style="padding:bottom:auto;max-width:60%;overflow:auto;padding-bottom:25px;background-color:white;margin-top:10%;box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4)">
+<div id="container" class="container my-5" style="max-width:100%;overflow:auto;padding-bottom:100px;background-color:white;">
 
 
-<div class="container" style="background-color: grey; height: auto; overflow: auto; min-width: 100%; min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: 10%">
 
+<div class="container" style="margin:auto;background-color:white">
 
 
 
 
-  <div class="container mb-4" style=" height: auto;overflow-wrap: anywhere; overflow: hidden;background-color: white; border-radius: 5px; padding: 2rem; display: flex; justify-content: space-between; align-items: flex-start; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
-    {% if article.image %}
-    <div class="card-image-container">
+
+
+  <div class="row mb-4" >
+      <div class="text-center row"><h2 class="h4 m-2 p-2 ">
+        <a href="{{ article.get_absolute_url }}" style="font-family: 'Angkor', cursive;text-decoration:none" class="h4 mb-1 ">{{ article.title.title }}</a>
+      </h2></div>
+       {% if article.image %}
+    <div class="card-image-container col-md-4  col-xm-12">
       <a href="{{ article.get_absolute_url }}" target="_blank">
-        <img class="card-img-top" src="{{ article.image.url }}" alt="..." style="width: 250px; height: 350px; margin-right: 1rem;">
+        <img class="card-img-top img-fluid" src="{{ article.image.url }}" alt="..." style="margin-right: 1rem;">
       </a>
     </div>
 {% endif %}
-    <div class="card-content-container" style="flex: 1; padding-left: 1rem;">
-      <h2 class="card-title h4 mb-1">
-        <a href="{{ article.get_absolute_url }}">{{ article.title.title }}</a>
-      </h2>
-      <p class="card-content;" style="" >{{ article.content }}</p>
+    <div class="card-content-container col-md-6 col-xm-12" style=" padding-left: 1rem;">
+
+      <p class="card-content" style="font-family: 'Fjalla One', sans-serif;text-decoration:none" >{{ article.content }}</p>
       <small class="mb-1 mt-1">{{ article.created }}</small>
         <small> <a href="{% url 'blog:existingprofile' article.author.user.id  %}" target="_blank" style="text-decoration:none"> Author: {{ article.author.preferred_name }}</a></small>
 
@@ -35,60 +36,87 @@
         <a href="{% url 'blog:article-upvote' article.id %}" ><i class="fa-solid fa-thumbs-up" style="font-size:1.2rem" ></i></a>
             <p class="px-3">{{upvotes}}</p>
        </div>
+<div class="row">
         {% if comments %}
+
+
+        <div class="col" style="height:200px;overflow:auto">
+
         <div class="mx-2">
-        <P><b>Comments</b></P>
+        <P style="font-family: 'Supermercado One', cursive;font-size:1.2rem;color:blue"><b>Comments</b></P>
         </div>
-        <ul class="list-unstyled">
+
         <div>
             {% for comment in comments %}
-            <div class="row my-2" ><li class="my-0"><a class="my-0" href="{% url 'blog:existingprofile' article.author.user.id %}" style="text-decoration:none">
-            {{ comment.author.preferred_name|title }}</a>: {{ comment }}</li>
+            <div class="row my-0" style="line-height:0.5rem"><p style="font-size:0.9rem;"><a class="my-0" href="{% url 'blog:existingprofile' article.author.user.id %}" style="font-size:0.9rem;text-decoration:none">
+            <span  style="font-size:0.8rem">{{ comment.author.preferred_name|title }}</span>:<span style="margin-right: 3rem;font-size:0.8rem;"> {{ comment }}</span>
 
 
-             <span class="my-0">{% if comment.author.user == request.user %}{% csrf_token %}<a href="{% url 'blog:comment_delete' comment.id %}"  ><i style="font:0.1rem" class="fa-solid fa-trash"></i></a>{% endif %}</span>
+             <span class="my-0">{% if comment.author.user == request.user %}{% csrf_token %}<a href="{% url 'blog:comment_delete' comment.id %}"  ><i style="font:0.8rem;color:blue;" class="<i fa-solid fa-eraser"></i> </a></span></p>
+                {% endif %}
             </div>
             {% endfor %}
 
         </div>
-        </ul>
+
         {% endif %}
-        <div class="row">
-            <div class="col-md-4 py-4 my-4">
+
+             <div class="row">
+            <div class="col py-2 my-2">
              <form action="{% url 'blog:comment' article.id %}" method="POST">
+                 {{ form.content }}
     {% csrf_token %}
-    <div class="input-group">
-        {{ form.content }}
-        <div class="input-group">
-            <button class="form-control btn  btn-primary" id="button-submit" type="submit">Add comment...</button>
+
+        <div class="input-group-append">
+       <button class="form-control btn-primary" id="button-submit" type="submit" >add comment</button>
         </div>
-    </div>
+
 </form>
         </div>
             </div>
-  {% if request.user.email == article.author.user.email %}
-        <div class="row pb-0">
-<div style="display:flex" class="px-3 pb-0 mb-0">
-    <span><a href="{% url 'blog:update' article.pk %}" class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i></a></span><span><a style="margin-left:1rem"
-        href="{% url 'blog:delete' article.pk %}" class="btn btn-danger btn-sm"><i style="font:1rem;color:white" class="fa-solid fa-trash"></i></a></span>
-</div>
             </div>
-    </div>
 
-    {% endif %}
-  </div>
+            </div>
 
-
-<div>
-
-    <div class="col-md-3 my-3" style="display:flex;justify-content:space-around;align-items:center">
-    <a href="{{request.META.HTTP_REFERER|escape}}" style="font-size:1.5rem" ><i class="fa-solid fa-backward"></i></a>
-
-</div>
 
     </div>
 
 
+
+
+
+  </div>
+
+</div>
+
+
+
+    <div class="row">
+
+ <div class="col-sm-6 col-md-5 p-3" style="background:white;margin:auto;display:flex;color:white;justify-content:space-between;padding-bottom:0;font-size:1.5rem;">
+    <a href="{{request.META.HTTP_REFERER|escape}}" ><i class="fa-solid fa-backward text-blue" ></i></a>
+        <a href="/" ><i class="fa-solid fa-house text-blue"></i></a>
+         {% if request.user.email == article.author.user.email %}
+
+
+    <a href="{% url 'blog:update' article.pk %}" ><i class="fa-solid fa-pen-to-square text-blue" ></i></a>
+       <a href="{% url 'blog:delete' article.pk %}"  ><i class="fa-solid fa-trash text-blue"></i></a>
+        {% endif %}
+
+  </div>
+        <div>
+
+ </div>
+
+
+
+
 </div>
   </div>
+
+</div>
+
 {% endblock %}
+
+
+

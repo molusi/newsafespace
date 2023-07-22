@@ -12,6 +12,3 @@ def logmeout(request):
     auth.logout(request)
     return redirect('blog:home')
 
-# <i class="fa-solid fa-thumbs-down"></i>
-# <i class="fa-solid fa-thumbs-up">
-# <i class="fa-solid fa-pen-to-square"></i>

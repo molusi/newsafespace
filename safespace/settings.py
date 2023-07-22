@@ -10,8 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
+import os
 
+import dj_database_url
+from dotenv import load_dotenv
+
+from django.core.management.utils import get_random_secret_key
 
 #
 #
@@ -24,26 +30,31 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-td%h1j*s1j@58x*(=-&8mbpj0jb&__p_17tr&7q706cfjbw4oe'
-
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+
+
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+
 AUTH_USER_MODEL = 'accounts.User'
 
 # Application definition
 import cloudinary
 import tinify
-tinify.key = "TxkRT8fyVQJ0cLcn1X4KB3r7d6M8bM9T"
+tinify.key =  os.getenv("tinify.key")
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
 cloudinary.config(
-  cloud_name = 'abimolusi',
-  api_key ='599478888529186',
-  api_secret='5PpoioDxsGjm7FYo90f7A0NpXms'
+  cloud_name = os.getenv("cloud_name"),
+  api_key =os.getenv("api_key"),
+  api_secret=os.getenv("api_secret")
 )
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -57,14 +68,17 @@ INSTALLED_APPS = [
     'crispy_forms',
 ]
 # Email setttings
-EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST="smtp.gmail.com"
-EMAIL_FROM="molusi.abigail@gmail.com"
-EMAIL_HOST_USER="mysafespacetoblog@gmail.com"
-EMAIL_HOST_PASSWORD="faxwwljxnkfudquk"
-EMAIL_PORT=587
-EMAIL_USE_TLS = True
-PASSWORD_RESET_TIMEOUT=14400
+EMAIL_BACKEND=os.getenv("EMAIL_BACKEND")
+EMAIL_HOST=os.getenv("EMAIL_HOST")
+EMAIL_FROM=os.getenv("EMAIL_FROM")
+EMAIL_HOST_USER=os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD=os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_PORT=os.getenv("EMAIL_PORT")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
+PASSWORD_RESET_TIMEOUT= os.getenv("PASSWORD_RESET_TIMEOUT")
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -99,13 +113,30 @@ WSGI_APPLICATION = 'safespace.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'db.sqlite3',
+#     }
+# }
+if DEVELOPMENT_MODE is True:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
     }
-}
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+    DATABASES = {
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    }
+
+
+
+
 
 
 # Password validation
@@ -141,8 +172,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [STATIC_DIR, ]
+
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -156,10 +186,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
 
+
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
-STATIC_URL = 'static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

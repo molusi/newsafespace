@@ -29,7 +29,7 @@
   }
 </style>
 
-<div class="container mt-5 mb-5" style="height:100vh; max-height:100%; padding-bottom:100px">
+<div class="container mt-5 mb-5" style="height:100vh; max-height:100%; padding-bottom:100px;display:flex;justify-content:center">
   <div class="col-md-8 mt-1">
     <form action="." method="POST" class="py-2 mb-3" enctype="multipart/form-data">
       {% csrf_token %}
@@ -47,9 +47,7 @@
         {{ form.about|as_crispy_field }}
       </div>
 
-      <div class="form-group p-3">
-        {{ form.twitter|as_crispy_field }}
-      </div>
+
 
       <div class="form-group p-3">
         {{ form.linkedin|as_crispy_field }}

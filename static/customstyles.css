@@ -5,6 +5,12 @@ padding:0;
 box-sizing:border-box;
 
 }
+@media(max-width: 992px){}
+@media(max-width: 768px){}
+@media(max-width: 576px){}
+[class*="col-"]{
+padding:1rem}
+
  .success-message {
         color: purple;
          border:solid purple;

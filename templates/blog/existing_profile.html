@@ -5,85 +5,82 @@
 
 
 
-<div class="container" style="height:100%;width:100%;display:flex;justify-content:center;align-items:center;">
+<div class="container fluid p-5" >
 
 
+        <aside class="profile-card col-md-6  col-sm-10 mt-5 fluid" style="display:flex-direction:vertical;flex;justify-content:center;align-items:center;margin:auto;background-color: rgba(0, 0, 0, 0.4);" >
 
-        <aside class="profile-card" style="margin:0 auto">
+<div class="row">
 
-
-
-  <header>
+  <header  class="fluid col-md-8  col-xm-12 px-4" style="box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
 
     <!-- here’s the avatar -->
-<img src="{{ userprofile.profilepic.url }}" alt="Profile image" width="350px" height="300px">
-
+<img src="{{ userprofile.profilepic.url }}" class="img-fluid" alt="Profile image" >
+<div class="row">
     <!-- the username -->
-    <h1>{{ userprofile.preferred_name|title }}</h1>
+    <h1 style="font-family: 'Kaushan Script', cursive;font-size:2rem" class="text-center">{{ userprofile.preferred_name|title }}</h1>
 
 
 
-  </header>
+
 
   <!-- bit of a bio; who are you? -->
   <div class="profile-bio">
 
-    <p>{{ userprofile.about }}</p>
+    <p style="font-family: 'Merienda', cursive;font-size:1rem" class="text-center">{{ userprofile.about }}</p>
+
+  </div>
+</div>
+  <!-- some social links to show off -->
+  <div class="profile-social-links col-md-10" style="background-color:white;display:flex;justify-content:center">
+
+
+       {% if userprofile.linkedin %}
+
+     <a href="{{userprofile.linkedin}}" target='_blank'><i class="bi bi-linkedin " style="font-size:1.5rem;color:blue"></i></a>
+
+    {% endif %}
+
 
   </div>
 
-  <!-- some social links to show off -->
-  <ul class="profile-social-links" style="display:flex;justify-content:center">
 
-    <!-- twitter - el clásico  -->
-    {% if userprofile.twitter %}
-    <li>
 
-      <a href="{{userprofile.twitter}}" target="_blank"> <i class="bi bi-twitter mt-0 px-2 mb-3"
-                                                                              style="font-size:1.5rem"></i></a>
 
-    </li>
-    {% endif %}
-       {% if userprofile.linkedin %}
-    <li>
-     <a href="{{userprofile.linkedin}}" target='_blank'><i class="bi bi-linkedin px-2 mt-0 mb-3" style="font-size:1.5rem;color:blue"></i></a></span>
-    </li>
-    {% endif %}
-    <!-- envato – use this one to link to your marketplace profile -->
-
-  </ul>
-{% if userprofile.user.email == request.user.email %}
-    <div class="container" style="display:flex;justify-content:center">
-
-    <div class="row">
-            <div class="col-sm">
-                <a href="{% url 'blog:userprofile_update' request.user.id %}">
-                   <i class="fa-solid fa-pen-to-square"></i>
-                </a>
-            </div>
-
-            <div class="col-sm"></div>
-        </div>
-             <div class="row">
-        <div class="col-6 pb-5" style="display:flex;justify-content:space-around">
-            <a href="{% url 'blog:home' %}"
-                >
-                <i class="fa-solid fa-house"></i>
-            </a>
-        </div>
-    </div>
-        </div>
-{% else %}
-    <div class="row">
-        <div class="col-6 pb-5" style="display:flex;justify-content:space-around">
-
-               <a href="{{request.META.HTTP_REFERER|escape}}" style="font-size:1.5rem" ><i class="fa-solid fa-backward"></i></a>
+<div class="row">
+            <div class="col-sm-3 col-md-10 my-3" style="background-color:white;margin:auto;display:flex;justify-content:center;align-items:center">
+    <a href="{{request.META.HTTP_REFERER|escape}}" style="padding-bottom:0;font-size:1.5rem;margin-right:1.5rem" ><i class="fa-solid fa-backward"></i></a>
+                {% if userprofile.user.email == request.user.email %}
+    <a href="{% url 'blog:userprofile_update' userprofile.pk %}" style="padding-bottom:0;font-size:1.5rem;margin-right:1.5rem"><i class="fa-solid fa-pen-to-square"></i></a>
+                            {% endif %}
+        <a href="/" style="font-size:1.4rem"><i class="fa-solid fa-house"></i></a>
 
         </div>
-    </div>
+</div>
+
+
+       </header>
+    <div class="col-md-4 col-sm-10">
+    {% if articles %}
+            <h1 style="font-family: 'Kaushan Script'; cursive;color:white" class="text-center">Posts</h1>
+            {% for article in articles %}
+            <ol>
+                <li style="color:white">
+                    <a style="font-family: 'Merienda'; cursive;color:white ;text-decoration:none" href="{{ article.get_absolute_url }}" >{{ article }}</a>
+                </li>
+            </ol>
+            {% endfor %}
             {% endif %}
+        </div>
+    </div>
+
         </aside>
+
+
  </div>
 
 
 {% endblock %}
+
+
+

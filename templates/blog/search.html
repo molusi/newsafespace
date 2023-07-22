@@ -3,44 +3,51 @@
 
 {% block content %}
 
-<div class="container" style="height:110vh;overflow:auto;">
-    <div class="row">
+<div class="container" style="height:110vh;">
+    <div class="col" style="display:flex;flex-direction:column;justify-content:center">
 
 
  {% if query %}
  <div class="row m-4">
-
+ <div class="col-md-12 mt-4 pt-5" style="display:flex;justify-content:center;flex-direction:column;align-items:center">
  {% if results %}
-     <div class="col-md-12 mt-4">
- <h2>Results for "{{ query|escape }}":</h2>
- <ul>
+
+
+ <h2 style="font-family: 'Angkor', cursive;">Results for "{{ query|escape }}":</h2>
+
+
  {% for article in results %}
-   <li><a href="{% url 'blog:detail' pk=article.id %}">{{ article|escape }}</a></li>
-
- </ul>
-  </div>
+         <ol>
+     <div class="row" >
+   <li><a href="{% url 'blog:detail' pk=article.id %}" style="font-family: 'Merienda', cursive">{{ article|escape }}</a></li>
 </div>
+ </ol>
  {% endfor %}
-
- {% else %}
+           {% else %}
      <div class="mt-5">
- <center><span><h4 >No articles found .....</h4><a  href="{% url 'blog:home' %}"><i style="font-size:1.5rem" class="fa-solid fa-backward"></i></a></span></center>
+ <h4 style="font-family: 'Angkor', cursive;" >No articles found .....</h4>
+     </div>
+     {% endif %}
+{% endif %}
+<a  href="{% url 'blog:home' %}"><i style="font-size:1.5rem" class="fa-solid fa-backward"></i></a>
+</div>
+
+  </div>
+
+
+
+
+
+
+
+
+
      </div>
 </div>
-{% endif %}
-{% endif %}
-
-
-
-
-
-
-
-
-
-     </div>
- </div>
 </div>
+</div>
+
+
 
 
 

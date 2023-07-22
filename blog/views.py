@@ -22,7 +22,7 @@ from accounts.forms import UserForm, CreateuserForm
 from blog.forms import *
 from .models import Article,Vote
 from .tokens import account_activation_token
-
+from django.db.models import Sum
 user = get_user_model()
 
 
@@ -214,19 +214,24 @@ def commentdelete(request, pk):
     comment_.delete()
     return HttpResponseRedirect(reverse("blog:detail", kwargs={"pk": article_.pk}))
 
-
 voters = []
 def upvote(request, article_id):
+    deducted = False
     article = Article.objects.get(id=article_id)
+    votes= Vote.objects.filter(article=article)
     vote, created = Vote.objects.get_or_create(user=request.user, article=article)
-
-    if request.user not in voters:
-        if created:
-            vote.upvote = 1
-        else:
-            vote.upvote += 1
-            vote.save()
-        voters.append(request.user)
+    for vote in votes:
+        voters.append((vote.user,vote.article.id))
+    if (request.user,article_id) not in voters:
+        vote.upvote=vote.upvote+1
+    elif (request.user,article_id) in voters and vote.upvote>=1 and  deducted==False:
+        vote.upvote = vote.upvote - 1
+        deducted=True
+    elif  (request.user,article_id) in voters and vote.upvote>=1 and  deducted==True:
+        vote.upvote = vote.upvote + 1
+        deducted=False
+    else:
+        pass
     return redirect('blog:detail', pk=article_id)
 
 
@@ -241,6 +246,7 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
         return get_object_or_404(Article, pk=id_)
 
 
+
 class ArticleDetailView(DetailView):
     model = Article
     template_name = 'blog/articledetail.html'
@@ -250,13 +256,17 @@ class ArticleDetailView(DetailView):
         article = self.get_object()
         comments = Comment.objects.filter(article=article)
         try:
-            votes=Vote.objects.get(article__id=article.id)
-            upvotes=votes.upvote
+            votes = Vote.objects.filter(article=article)
+            # a queryset with multiple 'Vote' objects related to the article
+            # You can use the Sum function to aggregate the upvotes
+            upvotes = votes.aggregate(total_upvotes=Sum('upvote'))['total_upvotes']
             context['comments'] = comments
-            context["upvotes"]=upvotes
+            context["upvotes"] = upvotes or 0  # Default to 0 if no upvotes found
         except ObjectDoesNotExist:
             pass
         return context
+
+
 
 
 
@@ -302,13 +312,11 @@ def userprofileview(request, *args, **kwargs):
             about = form.cleaned_data.get('about')
             profilepic = form.cleaned_data.get('profilepic')
             linkedin = form.cleaned_data.get('linkedin')
-            twitter = form.cleaned_data.get('twitter')
             userprofile, created = Userprofile.objects.get_or_create(user=request.user)
 
             userprofile.preferred_name = preferred_name
             userprofile.about = about
             userprofile.linkedin=linkedin
-            userprofile.twitter=twitter
 
             if profilepic:
                 userprofile.profilepic = profilepic
@@ -335,7 +343,9 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
 def existinguserprofile(request, pk):
     try:
         userprofile = Userprofile.objects.get(user__id=pk)
-        context = {"userprofile": userprofile}
+        articles=Article.objects.filter(author__pk=userprofile.pk)
+
+        context = {"userprofile": userprofile,"articles":articles}
         return render(request, 'blog/existing_profile.html', context)
     except ObjectDoesNotExist:
         if pk == request.user.id:
@@ -343,3 +353,10 @@ def existinguserprofile(request, pk):
         else:
             messages.info(request, 'Profile no longer exists..')
             return HttpResponseRedirect(reverse('blog:home'))
+
+
+
+
+
+
+
