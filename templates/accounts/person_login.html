@@ -1,6 +1,7 @@
 {% extends 'blog/index.html' %}
 {% load crispy_forms_tags %}
-{% block title %}Login{% endblock%}
+{% block title %}Login
+{% endblock%}
 
 
 {% load static %}
@@ -34,10 +35,9 @@
 
 
     <div class="field text-center">
-        <div class="input-container control text-center text-red help  is-invalid ">
-          <p class="">{{message }}</p>
 
-        </div>
+          <div class="my-2 control text-center text-red is-invalid" id="abigail">{{message }}</div>
+
     </div>
 
 
@@ -45,14 +45,14 @@
 {% endfor %}
  {% endif %}
 
-                    <div class="text-center  input-container control">{{ form.email }}   </div>
+                    <div class="text-center my-2  input-container control">{{ form.email }}   </div>
 
-                    <div class=" text-center  input-container control">{{ form.password }}</div>
+                    <div class=" text-center my-2 input-container control">{{ form.password }}</div>
 
-            <center>
-                <button class="btn form-control btn-primary mb-2" name="login" type="submit">Login</button>
 
-            </center>
+                <button class="btn form-control my-2 btn-primary" name="login" type="submit">Login</button>
+
+
         </form>
 </div>
 

@@ -9,19 +9,19 @@ user = get_user_model()
 
 
 class CommentForm(forms.Form):
-    content = forms.CharField(widget=forms.Textarea(attrs={'label':"comment","rows":"1","cols":3,"class":"form-control","placeholder":"add comment..."}))
+    content = forms.CharField(widget=forms.Textarea(attrs={'label':"comment","rows":"1","cols":3,'class':'text-center input form-control',"placeholder":"add comment..."}))
     class Meta:
         model = Comment
         fields = ['content']
 class CommentUpdateForm(forms.ModelForm):
-    content = forms.CharField(widget=forms.Textarea(attrs={'label':"comment","rows":"1","cols":3,"class":"form-control","placeholder":"add comment..."}))
+    content = forms.CharField(widget=forms.Textarea(attrs={'label':"comment","rows":"1","cols":3,'class':'text-center input form-control',"placeholder":"add comment..."}))
     class Meta:
         model = Comment
         fields = ['content']
 
 class ArticleForm(forms.Form):
-    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'title','class':' form-control'}))
-    content = forms.CharField(widget=forms.Textarea(attrs={"rows":12,"cols":60,'class':' form-control','placeholder':'content'}))
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'title','class':'text-center input form-control'}))
+    content = forms.CharField(widget=forms.Textarea(attrs={"rows":12,"cols":60,'class':'text-center input form-control','placeholder':'content'}))
 
 
 
@@ -31,9 +31,9 @@ class ArticleForm(forms.Form):
 
 
 class ArticleModelForm(forms.ModelForm):
-    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'title','class':' form-control'}))
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'title','class':'text-center input form-control'}))
     content = forms.CharField(
-        widget=forms.Textarea(attrs={'class': ' form-control'}))
+        widget=forms.Textarea(attrs={'class':'text-center input form-control'}))
 
     class Meta:
         model = Article
@@ -44,10 +44,10 @@ class ArticleModelForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.Form):
-    preferred_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'preffered name', 'class': 'form-control'}), max_length=255)
-    about = forms.CharField(widget=forms.Textarea(attrs={"rows":3,"cols":25,"placeholder":"About you..","class":"form-control"}),max_length=400)
+    preferred_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'preffered name', 'class':'text-center input form-control'}), max_length=255)
+    about = forms.CharField(widget=forms.Textarea(attrs={"rows":3,"cols":25,"placeholder":"About you..",'class':'text-center input form-control'}),max_length=400)
     linkedin = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'url', 'class': ' form-control'}), max_length=255)
+        widget=forms.TextInput(attrs={'placeholder': 'url','class':'text-center input form-control'}), max_length=255)
 
     class Meta:
         model = Userprofile
@@ -55,8 +55,12 @@ class UserProfileForm(forms.Form):
 
 class UserProfileUpdateForm(forms.ModelForm):
     preferred_name = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'preffered name', 'class': 'px-2 form-control'}), max_length=255)
-    about = forms.CharField(widget=forms.Textarea(attrs={"rows":3,"cols":25,"placeholder":"About you..","class":"form-control"}),max_length=400)
+        widget=forms.TextInput(attrs={'class':'text-center input form-control'}), max_length=255)
+    about = forms.CharField(widget=forms.Textarea(attrs={"rows":3,"cols":25,'class':'text-center input form-control'}),max_length=400)
+    linkedin = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'text-center input form-control'}),
+        max_length=255)
+
     class Meta:
         model = Userprofile
         fields = ['preferred_name','profilepic','about','linkedin']

@@ -60,15 +60,15 @@
 
 
        </header>
-    <div class="col-md-4 col-sm-10">
+    <div class="col-md-4 col-sm-10" style="overflow:auto">
     {% if articles %}
             <h1 style="font-family: 'Kaushan Script'; cursive;color:white" class="text-center">Posts</h1>
             {% for article in articles %}
-            <ol>
+            <ul>
                 <li style="color:white">
-                    <a style="font-family: 'Merienda'; cursive;color:white ;text-decoration:none" href="{{ article.get_absolute_url }}" >{{ article }}</a>
+                    <a style="font-family: 'Merienda'; cursive;color:white ;" href="{{ article.get_absolute_url }}" >{{ article }}</a>
                 </li>
-            </ol>
+            </ul>
             {% endfor %}
             {% endif %}
         </div>

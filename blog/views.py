@@ -1,7 +1,6 @@
 import re
 from django.contrib.auth import authenticate
 from django.contrib.auth import login, get_user_model
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
@@ -216,7 +215,6 @@ def commentdelete(request, pk):
 
 voters = []
 def upvote(request, article_id):
-    deducted = False
     article = Article.objects.get(id=article_id)
     votes= Vote.objects.filter(article=article)
     vote, created = Vote.objects.get_or_create(user=request.user, article=article)
@@ -224,14 +222,6 @@ def upvote(request, article_id):
         voters.append((vote.user,vote.article.id))
     if (request.user,article_id) not in voters:
         vote.upvote=vote.upvote+1
-    elif (request.user,article_id) in voters and vote.upvote>=1 and  deducted==False:
-        vote.upvote = vote.upvote - 1
-        deducted=True
-    elif  (request.user,article_id) in voters and vote.upvote>=1 and  deducted==True:
-        vote.upvote = vote.upvote + 1
-        deducted=False
-    else:
-        pass
     return redirect('blog:detail', pk=article_id)
 
 

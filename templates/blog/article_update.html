@@ -15,19 +15,19 @@
 {% endfor %}
 
 {% endif %}
-<div class="container" height="100vh" style="overflow:auto;padding-bottom:100px;margin:auto;display:flex;justify-content:center">
-<div class="my-4 col-md-9 col-sm-5">
+<div class="container " height="100vh" style="overflow:auto;padding-bottom:100px;margin:8% auto;display:flex;justify-content:center">
+<div class="my-4 col-md-9 col-sm-5 mt-4">
 <form action="." method="post" enctype="multipart/form-data" style="margin:auto" >
     {% csrf_token %}
-    <p class="mt-2  ">{{ form.title }}</p>
+    <div class="form-group  my-2">{{ form.title }}</div>
+
+<div class="form-group form-control my-2">
+   <input  type="file" name="image" accept="image/jpeg">
+</div>
+    <div class="my-2 form-group" >{{ form.content }}</div>
 
 
-   <input class="form-group mt-2" type="file" name="image" accept="image/jpeg">
-
-    <p class="mt-2">{{ form.content }}</p>
-
-
-    <button class="form-control btn btn-lg btn-primary  py-0 mt-1" type="submit">Update</button>
+    <button class="form-control btn btn-lg btn-primary  py-0 my-2" type="submit">Update</button>
 
 </form>
 </div>

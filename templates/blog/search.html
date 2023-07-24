@@ -4,27 +4,29 @@
 {% block content %}
 
 <div class="container" style="height:110vh;">
-    <div class="col" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="col" style="margin:auto;padding-top:5%;display:flex;flex-direction:column;justify-content:center;align-items:center">
 
 
  {% if query %}
- <div class="row m-4">
- <div class="col-md-12 mt-4 pt-5" style="display:flex;justify-content:center;flex-direction:column;align-items:center">
+ <div class="row m-4" style="padding-bottom:10em;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);margin:auto;height:50%;width:50%;background-color:white;">
+ <div class="col-md-12  mt-4 pt-5" style="display:flex;justify-content:center;flex-direction:column;align-items:center">
  {% if results %}
 
-
+<div class="row">
  <h2 style="font-family: 'Angkor', cursive;">Results for "{{ query|escape }}":</h2>
-
+</div>
 
  {% for article in results %}
+     <div class="row">
          <ol>
-     <div class="row" >
-   <li><a href="{% url 'blog:detail' pk=article.id %}" style="font-family: 'Merienda', cursive">{{ article|escape }}</a></li>
-</div>
- </ol>
+
+   <li><a href="{% url 'blog:detail' pk=article.id %}" style="font-family: 'Merienda', cursive;text-decoration:none">{{ article|escape }}</a></li>
+
+        </ol>
+         </div>
  {% endfor %}
            {% else %}
-     <div class="mt-5">
+     <div class="row mt-5">
  <h4 style="font-family: 'Angkor', cursive;" >No articles found .....</h4>
      </div>
      {% endif %}

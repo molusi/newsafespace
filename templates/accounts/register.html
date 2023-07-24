@@ -20,11 +20,11 @@
    {% csrf_token %}
 
 
-    <div  class="field text-center" >{% for error in form.email.errors %}<p class="help mb-1 input-container form-control is-invalid  is-danger control text-red " >{{error}}</p> {% endfor %}</div><div  class=" text-center  input-container control">{{form.email  }}</div>
-    <div class="field text-center"><div class="input-container control text-center">{{ form.password1 }}{% for error in form.password1.errors %}<p class="text-center text-red help form-control is-invalid  is-danger control  ">{{error}}</p> {% endfor %}</div></div>
-    <div class="field text-center"><div class="input-container control text-center">{{ form.password2 }}{% for error in form.password2.errors %}<p class=" text-center text-red help form-control is-invalid  is-danger control ">{{error}}</p> {% endfor %}</div></div>
+    <div  class="field my-2 text-center" >{% for error in form.email.errors %}<p class="help my-2 input-container form-control is-invalid  is-danger control text-red " >{{error}}</p> {% endfor %}</div><div  class=" text-center my-2  input-container control">{{form.email  }}</div>
+    <div class="field my-2 text-center"><div class="input-container control text-center">{{ form.password1 }}{% for error in form.password1.errors %}<p class="text-center  my-2 text-red help form-control is-invalid  is-danger control  ">{{error}}</p> {% endfor %}</div></div>
+    <div class="field my-2 text-center"><div class="input-container control text-center">{{ form.password2 }}{% for error in form.password2.errors %}<p class=" text-center my-2 text-red help form-control is-invalid  is-danger control ">{{error}}</p> {% endfor %}</div></div>
 
-   <center><button class="btn form-control btn-primary mb-2" name="createuser" type="submit" >Create Account</button></center>
+   <center><button class="btn form-control btn-primary my-2" name="createuser" type="submit" >Create Account</button></center>
    </form>
 
         <center> Already have an account? <a href="{% url 'accounts:person_login' %}" style="color:white">Login</a></center>

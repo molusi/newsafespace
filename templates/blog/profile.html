@@ -5,47 +5,47 @@
 {% block content %}
 
 
-<div class="container p-5" style="align-items:center;margin:auto;height:80%;width:80%;display:flex;flex-direction:column;justify-content:center">
+<div class="container py-5" style="align-items:center;margin:auto;height:80%;width:80%;display:flex;flex-direction:column;justify-content:center">
 
-        <div class="col-sm-8 col-xm-7 col-md-8">
+        <div class="mt-4 col-xm-3  col-md-6" style="overflow:hidden;width:60%">
 <form action="." method="POST" enctype="multipart/form-data" style='margin:auto;margin-top:3rem'>
     {% csrf_token %}
 
 
     {% for error in errors %}
-    <div class="help form-control  is-invalid is-danger control " >
+    <div class="help form-control my-2 is-invalid is-danger control form-group " >
      {{error}}
     </div>
     {% endfor %}
 
-    <div class="p-3 form-group">
+<div class="text-center my-2  input-container control">
       {{ form.preferred_name }}
-    </div>
+</div>
 
-    <div class="form-group">
-      <div style="display:flex;align-items:center">
-          <img id="profile-preview" src="#" alt="Profile Picture Preview" width="100px" height="100px" class="p-3 rounded-circle mr-3">
 
-          <input type="file" name="profilepic" accept="image/*" onchange="previewProfilePic(this)">
+      <div style="display:flex;align-items:center" class="my-2 form-control form-group">
+          <img id="profile-preview" src="#" alt="Profile Picture Preview" width="100px" height="100px" class="py-2 control form-group square mr-3">
+
+          <input type="file"  name="profilepic" accept="image/*" onchange="previewProfilePic(this)">
 
       </div>
-    </div>
 
 
 
-    <div class="p-3 form-group">
+
+<div class="text-center my-2  input-container control">
       {{ form.about}}
-    </div>
-
-
-    <div class="p-3 form-group">
-
-      <input type="text" class="form-control" name="linkedin" id="linkedin" placeholder="Enter LinkedIn URL">
-    </div>
+</div>
 
 
 
-    <button class="btn btn-primary btn-block control form-control" type="submit">Save</button>
+
+      <input type="text" class="text-center my-2 input-container form-control" name="linkedin" id="linkedin" placeholder="Enter LinkedIn URL">
+
+
+
+
+    <button class="btn btn-primary form-control  my-2 form-group" type="submit">Save</button>
   </form>
    </div>
 

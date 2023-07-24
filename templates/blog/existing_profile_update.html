@@ -4,60 +4,38 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-<style>
-  .form-label {
-    font-weight: bold;
-  }
 
-  .form-input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
 
-  .form-input:focus {
-    outline: 0;
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
-
-  .form-submit-button {
-    font-size: 0.9em;
-    padding: 0.5rem 1rem;
-  }
-</style>
-
-<div class="container mt-5 mb-5" style="height:100vh; max-height:100%; padding-bottom:100px;display:flex;justify-content:center">
-  <div class="col-md-8 mt-1">
-    <form action="." method="POST" class="py-2 mb-3" enctype="multipart/form-data">
+<div class="container" style="margin:auto;height:100%;margin:auto">
+<div class="container m-5" style="align-items:center;margin:auto !important;height:80%;width:80%;display:flex;flex-direction:column;justify-content:center">
+      <div class="mt-2 col-xm-3  col-md-6" style="margin:auto;overflow:hidden;width:60%">
+    <form style="margin: 20% auto" action="." method="POST" class="py-2 mb-3" enctype="multipart/form-data">
       {% csrf_token %}
 
-      <div class="form-group p-3">
-        {{ form.preferred_name|as_crispy_field }}
+      <div class="text-center my-2  input-container control">
+        {{ form.preferred_name }}
       </div>
 
-      <div class="form-group p-3">
+      <span class="form-group form-control my-2">
         <input type="file" name="profilepic" accept="image/jpeg" class="form-input">
-      </div>
+      </span>
 
 
-      <div class="form-group p-3">
-        {{ form.about|as_crispy_field }}
-      </div>
-
-
-
-      <div class="form-group p-3">
-        {{ form.linkedin|as_crispy_field }}
+      <div class="text-center my-2  input-container control">
+        {{ form.about }}
       </div>
 
 
 
-      <div class="form-group p-3">
+      <div class="text-center my-2 input-container control">
+        {{ form.linkedin}}
+      </div>
+
+
+
+      <div class="my-2">
         <div class="d-flex justify-content-between">
-          <button class="form-control btn btn-primary form-submit-button px-4" type="submit" style="font-size: 0.9em;">Update</button>
+          <button class="form-control btn btn-primary form-submit-button px-4 my-2" type="submit" style="font-size: 0.9em;">Update</button>
 
 
         </div>
@@ -65,5 +43,5 @@
     </form>
   </div>
 </div>
-
+</div>
 {% endblock %}

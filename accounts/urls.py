@@ -1,5 +1,4 @@
-import blog
-from . import views
+
 from .views import logmeout
 from django.urls import path
 from.models import *
