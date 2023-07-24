@@ -28,14 +28,35 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+import environ
+import os
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
+# Set the project base directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+READ_DOT_ENV_FILE =env.bool("READ_DOT_ENV_FILE ",False)
+if READ_DOT_ENV_FILE:
+    environ.Env.read_env()
+# False if not in os.environ because of casting above
+DEBUG = env('DEBUG')
+SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY ="django-insecure-td%h1j*s1j@58x*(=-&8mbpj0jb&__p_17tr&7q706cfjbw4oe"
+
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 # SECURITY WARNING: don't run with debug turned on in production!
 
-
-
+# Ver Cluster Port Status Owner    Data directory              Log file
+# 12  main    5432 down   postgres /var/lib/postgresql/12/main /var/log/postgresql
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 AUTH_USER_MODEL = 'accounts.User'
