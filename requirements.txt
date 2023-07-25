@@ -46,6 +46,7 @@ pylev==1.4.0
 pyparsing==3.0.9
 pyproject_hooks==1.0.0
 pyrsistent==0.19.3
+python-decouple==3.8
 python-dotenv==1.0.0
 pytz==2022.7
 rapidfuzz==2.13.7

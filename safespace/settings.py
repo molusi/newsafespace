@@ -9,50 +9,42 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import os
-import sys
+import cloudinary
+import tinify
 from pathlib import Path
 import os
 
-import dj_database_url
-from dotenv import load_dotenv
-
-from django.core.management.utils import get_random_secret_key
-
-#
-#
-# # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))uild paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+
 import environ
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+from decouple import Config, Csv, config
+
 load_dotenv()
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
 )
 
+
+SECRET_KEY = env('SECRET_KEY')
 # Set the project base directory
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Take environment variables from .env file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-READ_DOT_ENV_FILE =env.bool("READ_DOT_ENV_FILE ",False)
+READ_DOT_ENV_FILE =env.bool("READ_DOT_ENV_FILE ",True)
 if READ_DOT_ENV_FILE:
     environ.Env.read_env()
 # False if not in os.environ because of casting above
 DEBUG = env('DEBUG')
-SECRET_KEY = env('SECRET_KEY')
+
 # SECURITY WARNING: keep the secret key used in production secret!
 
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+# DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # Ver Cluster Port Status Owner    Data directory              Log file
@@ -61,26 +53,39 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split("
 
 AUTH_USER_MODEL = 'accounts.User'
 
-# Application definition
-import cloudinary
-import tinify
-tinify.key =  os.getenv("tinify.key")
-DEBUG = True
 
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+
+# Application definition
+
+tinify.key=env("tinify.key")
+
+
+# DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
 cloudinary.config(
-    cloud_name='abimolusi',
-    api_key='599478888529186',
-    api_secret='5PpoioDxsGjm7FYo90f7A0NpXms'
+    cloud_name=config('CLOUD_NAME'),
+    api_key=config('API_KEY'),
+    api_secret=config('API_SECRET')
 )
+
+
+TINIFY_KEY = config('TINIFY_KEY')
+
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'ENGINE':env('ENGINE'),
+        'NAME':env('NAME'),
+        'USER':env('USER'),
+        'PASSWORD':env('PASSWORD'),
+        'HOST':env('HOST'),
+        'PORT':env('PORT')
     }
 }
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 
 INSTALLED_APPS = [
@@ -93,39 +98,37 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'accounts.apps.AccountsConfig',
     'crispy_forms',
-]
-# Email setttings
-# EMAIL_BACKEND=os.getenv("EMAIL_BACKEND")
-# EMAIL_HOST=os.getenv("EMAIL_HOST")
-# EMAIL_FROM=os.getenv("EMAIL_FROM")
-# EMAIL_HOST_USER=os.getenv("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD=os.getenv("EMAIL_HOST_PASSWORD")
-# EMAIL_PORT=os.getenv("EMAIL_PORT")
-# EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
-# PASSWORD_RESET_TIMEOUT= os.getenv("PASSWORD_RESET_TIMEOUT")
+    "whitenoise.runserver_nostatic",
+    "django.contrib.staticfiles",
+   ]
+
+EMAIL_BACKEND=env("EMAIL_BACKEND")
+EMAIL_HOST=env("EMAIL_HOST")
+EMAIL_FROM=env("EMAIL_FROM")
+EMAIL_HOST_USER=env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD=env("EMAIL_HOST_PASSWORD")
+EMAIL_PORT=env("EMAIL_PORT")
+EMAIL_USE_TLS = env("EMAIL_USE_TLS")
+PASSWORD_RESET_TIMEOUT= env("PASSWORD_RESET_TIMEOUT")
 
 
-EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST="smtp.gmail.com"
-EMAIL_FROM="molusi.abigail@gmail.com"
-EMAIL_HOST_USER="mysafespacetoblog@gmail.com"
-EMAIL_HOST_PASSWORD="faxwwljxnkfudquk"
-EMAIL_PORT=587
-EMAIL_USE_TLS = True
-PASSWORD_RESET_TIMEOUT=14400
+
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'safespace.urls'
+
 
 TEMPLATES = [
     {
@@ -146,36 +149,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'safespace.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-#
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': 'db.sqlite3',
-#     }
-# }
-# if DEVELOPMENT_MODE is True:
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.sqlite3",
-#             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-#         }
-#     }
-# elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-#     if os.getenv("DATABASE_URL", None) is None:
-#         raise Exception("DATABASE_URL environment variable not defined")
-#     DATABASES = {
-#         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-#     }
 
-
-
-
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -212,20 +186,20 @@ USE_TZ = True
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
 
 
 
 
 
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
-MEDIA_ROOT = MEDIA_DIR
+
 MEDIA_URL = '/media/'
 
+MEDIA_ROOT = BASE_DIR / 'media'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
