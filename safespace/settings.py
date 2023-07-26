@@ -9,19 +9,11 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import cloudinary
-import tinify
+import os
 from pathlib import Path
-import os
-
-# BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 import environ
-import os
 from dotenv import load_dotenv
 
-from decouple import Config, Csv, config
 
 load_dotenv()
 env = environ.Env(
@@ -29,35 +21,31 @@ env = environ.Env(
     DEBUG=(bool, False)
 )
 
+#
+#
+# # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))uild paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = env('SECRET_KEY')
-# Set the project base directory
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Take environment variables from .env file
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-READ_DOT_ENV_FILE =env.bool("READ_DOT_ENV_FILE ",True)
-if READ_DOT_ENV_FILE:
-    environ.Env.read_env()
-# False if not in os.environ because of casting above
-DEBUG = env('DEBUG')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-td%h1j*s1j@58x*(=-&8mbpj0jb&__p_17tr&7q706cfjbw4oe'
 
-# DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
 
-# Ver Cluster Port Status Owner    Data directory              Log file
-# 12  main    5432 down   postgres /var/lib/postgresql/12/main /var/log/postgresql
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-
+ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'accounts.User'
 
-
-
 # Application definition
+import cloudinary
 
-tinify.key=env("tinify.key")
+
+from decouple import Config, Csv,config
+
 
 
 # DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
@@ -72,22 +60,6 @@ cloudinary.config(
 TINIFY_KEY = config('TINIFY_KEY')
 
 
-DATABASES = {
-    'default': {
-        'ENGINE':env('ENGINE'),
-        'NAME':env('NAME'),
-        'USER':env('USER'),
-        'PASSWORD':env('PASSWORD'),
-        'HOST':env('HOST'),
-        'PORT':env('PORT')
-    }
-}
-
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -98,10 +70,8 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'accounts.apps.AccountsConfig',
     'crispy_forms',
-    "whitenoise.runserver_nostatic",
-    "django.contrib.staticfiles",
-   ]
-
+]
+# Email setttings
 EMAIL_BACKEND=env("EMAIL_BACKEND")
 EMAIL_HOST=env("EMAIL_HOST")
 EMAIL_FROM=env("EMAIL_FROM")
@@ -111,24 +81,17 @@ EMAIL_PORT=env("EMAIL_PORT")
 EMAIL_USE_TLS = env("EMAIL_USE_TLS")
 PASSWORD_RESET_TIMEOUT= env("PASSWORD_RESET_TIMEOUT")
 
-
-
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
 ]
 
 ROOT_URLCONF = 'safespace.urls'
-
 
 TEMPLATES = [
     {
@@ -149,7 +112,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'safespace.wsgi.application'
 
 
+# Database
+# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+DATABASES = {
+    'default': {
+        'ENGINE':env('ENGINE'),
+        'NAME':env('NAME'),
+        'USER':env('USER'),
+        'PASSWORD':env('PASSWORD'),
+        'HOST':env('HOST'),
+        'PORT':env('PORT')
+    }
+}
+
+
+# Password validation
+# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -181,25 +160,25 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [STATIC_DIR, ]
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
 
 
 
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
-
+MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
-
-MEDIA_ROOT = BASE_DIR / 'media'
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
