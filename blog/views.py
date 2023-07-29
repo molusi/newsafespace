@@ -99,6 +99,13 @@ def activate(request, uidb64, token):
         return redirect(reverse_lazy("accounts:person_login"))
 
 
+
+
+
+
+
+
+
 def activateEmail(request, user, to_email):
     mail_subject = "Activate your user account."
 
@@ -128,7 +135,7 @@ def createaccount(request):
     user = request.user
     if request.user.is_authenticated:
         return redirect('blog:home')
-    elif user.is_admin and not user.is_email_verified:
+    elif user.is_superuser and not user.is_email_verified:
         activateEmail(request, user.email)
         return redirect(reverse_lazy("accounts:person_login"))
     else:
@@ -141,7 +148,6 @@ def createaccount(request):
                 return redirect(reverse_lazy("accounts:person_login"))
     context = {"form": form}
     return render(request, 'accounts/register.html', context)
-
 
 
 

@@ -79,7 +79,7 @@ EMAIL_HOST_USER=env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD=env("EMAIL_HOST_PASSWORD")
 EMAIL_PORT=env("EMAIL_PORT")
 EMAIL_USE_TLS = env("EMAIL_USE_TLS")
-PASSWORD_RESET_TIMEOUT= env("PASSWORD_RESET_TIMEOUT")
+PASSWORD_RESET_TIMEOUT= int(env("PASSWORD_RESET_TIMEOUT"))
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -161,7 +161,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [STATIC_DIR, ]
+
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -178,7 +178,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
-STATIC_URL = 'static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

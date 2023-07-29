@@ -20,7 +20,7 @@ user = get_user_model()
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
-    image = CloudinaryField('blog_image',default="https://res.cloudinary.com/abimolusi/image/upload/v1656202700/evefbujdtdnelnjkfeiz.jpg")
+    image = CloudinaryField('blog_image',default="https://res.cloudinary.com/abimolusi/image/upload/v1690459183/pen-paper-tea-go_n9dgcg.webp")
     content = models.TextField()
     author = models.ForeignKey("Userprofile",on_delete=models.SET_NULL,blank=True,null=True)
     created = models.DateField(auto_now_add=True)
